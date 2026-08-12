@@ -17,9 +17,9 @@ interface Props {}
 type DisplayMode = 'merged' | 'detailed';
 
 const MARKET_COL = 'w-16 min-w-[4rem] max-w-[4rem]';
-const TICKER_COL = 'w-28 min-w-[7rem] max-w-[7rem]';
-const MARKET_TICKER_COL = 'w-[11rem] min-w-[11rem] max-w-[11rem]';
-const WEIGHT_COL = 'w-[8.5rem] min-w-[8.5rem]';
+const TICKER_COL = 'w-[5.5rem] min-w-[5.5rem] max-w-[5.5rem]';
+const MARKET_TICKER_COL = 'w-[9.5rem] min-w-[9.5rem] max-w-[9.5rem]';
+const WEIGHT_COL = 'w-[6rem] min-w-[6rem] max-w-[6rem]';
 const DAILY_CHANGE_COL = 'w-28 min-w-[7rem]';
 
 function sanitizeAnnualized(v: number): number {
@@ -527,7 +527,7 @@ const HoldingsTable: React.FC<Props> = () => {
         <table className="min-w-full table-fixed text-sm text-left">
           <colgroup>
             <col style={{ width: '4rem' }} />
-            <col style={{ width: '7rem' }} />
+            <col style={{ width: '5.5rem' }} />
           </colgroup>
           {/* ⑤ Sortable headers */}
           <thead className="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider border-b border-slate-100 dark:border-slate-700">

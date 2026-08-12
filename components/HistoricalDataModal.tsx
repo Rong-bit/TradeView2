@@ -547,7 +547,7 @@ const HistoricalDataModal: React.FC<Props> = ({ onSave, onClose }) => {
            <div className="border rounded-lg overflow-hidden" style={{ backgroundColor: "#ffffff" }}>
                <div className="p-3 sm:p-4 border-b flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3" style={{ backgroundColor: "#f1f5f9" }}>
                    <h3 className="font-bold shrink-0" style={{ color: "#334155" }}>
-                    {selectedYear} Q{selectedQuarter} 數據
+                    {applyVars(tr.periodDataTitle, { year: selectedYear, quarter: selectedQuarter })}
                    </h3>
                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:justify-end">
                        <div className="flex items-center gap-2">
@@ -618,8 +618,8 @@ const HistoricalDataModal: React.FC<Props> = ({ onSave, onClose }) => {
                            <th className="px-1.5 sm:px-2 py-2 border-b border-slate-200 whitespace-nowrap">{tr.colMarket}</th>
                            <th className="px-2 py-2 border-b border-slate-200 whitespace-nowrap">{tr.colTicker}</th>
                            <th className="px-2 py-2 text-center border-b border-slate-200 whitespace-nowrap">
-                            <span className="sm:hidden">收盤價</span>
-                            <span className="hidden sm:inline">收盤價 ({selectedPeriodDateLabel})</span>
+                            <span className="sm:hidden">{tr.colClosePriceShort}</span>
+                            <span className="hidden sm:inline">{applyVars(tr.colClosePrice, { date: selectedPeriodDateLabel })}</span>
                            </th>
                        </tr>
                    </thead>

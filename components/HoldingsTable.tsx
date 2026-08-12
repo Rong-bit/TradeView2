@@ -20,7 +20,7 @@ const MARKET_COL = 'w-16 min-w-[4rem] max-w-[4rem]';
 const TICKER_COL = 'w-[5.5rem] min-w-[5.5rem] max-w-[5.5rem]';
 const MARKET_TICKER_COL = 'w-[9.5rem] min-w-[9.5rem] max-w-[9.5rem]';
 const WEIGHT_COL = 'w-[6rem] min-w-[6rem] max-w-[6rem]';
-const DAILY_CHANGE_COL = 'w-28 min-w-[7rem]';
+const DAILY_CHANGE_COL = 'w-[6.5rem] min-w-[6.5rem] max-w-[6.5rem]';
 
 function sanitizeAnnualized(v: number): number {
   if (!Number.isFinite(v)) return 0;

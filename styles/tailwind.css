@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@source "../index.html";
+@source "../privacy-policy.html";
+@source "../public";
+@source "../App.tsx";
+@source "../components";
+@source "../contexts";
+@source "../hooks";
+@source "../services";
+@source "../src";
+@source "../utils";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #0f172a;
+  --color-secondary: #334155;
+  --color-accent: #2563eb;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+
+  --color-app-page: #eef6ff;
+  --color-app-page-dark: #0b1220;
+  --color-app-header-from: #0f2744;
+  --color-app-header-via: #0f3d56;
+  --color-app-header-to: #0b4f4a;
+  --color-app-card-border: #bfdbfe;
+  --color-app-card-accent: #38bdf8;
+
+  --animate-fade-in: fadeIn 0.2s ease-out;
+  --animate-slide-up: slideUp 0.3s ease-out;
+  --animate-slide-right: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer utilities {
+  /* 頁面淺色底：淡藍／薄荷，深色模式對應 */
+  .app-page-shell {
+    background-color: var(--color-app-page);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 0% -10%, rgb(56 189 248 / 0.18), transparent 55%),
+      radial-gradient(ellipse 70% 45% at 100% 0%, rgb(16 185 129 / 0.12), transparent 50%);
+  }
+
+  &:where(.dark, .dark *) .app-page-shell {
+    background-color: var(--color-app-page-dark);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 0% -10%, rgb(37 99 235 / 0.22), transparent 55%),
+      radial-gradient(ellipse 70% 45% at 100% 0%, rgb(13 148 136 / 0.16), transparent 50%);
+  }
+
+  /* 區塊卡片：白底 + 淡藍邊 + 頂部色條 */
+  .app-section-card {
+    background-color: #ffffff;
+    border: 1px solid var(--color-app-card-border);
+    border-radius: 0.75rem;
+    box-shadow:
+      0 1px 2px rgb(15 23 42 / 0.04),
+      0 8px 24px rgb(37 99 235 / 0.06);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .app-section-card::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #38bdf8, #2563eb 45%, #10b981);
+  }
+
+  &:where(.dark, .dark *) .app-section-card {
+    background-color: rgb(30 41 59 / 0.92);
+    border-color: rgb(51 65 85);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  }
+
+  /* 頂欄／側欄深色藍綠漸層 */
+  .app-chrome-header {
+    color: #ffffff;
+    background-image: linear-gradient(
+      115deg,
+      var(--color-app-header-from) 0%,
+      var(--color-app-header-via) 48%,
+      var(--color-app-header-to) 100%
+    );
+    box-shadow:
+      0 4px 18px rgb(15 23 42 / 0.28),
+      inset 0 -1px 0 rgb(56 189 248 / 0.18);
+  }
+
+  /* 主按鈕 */
+  .app-primary-btn {
+    background-image: linear-gradient(135deg, #1d4ed8 0%, #2563eb 48%, #0d9488 100%);
+    color: #ffffff;
+    border: none;
+    transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 6px 16px rgb(37 99 235 / 0.28);
+  }
+
+  .app-primary-btn:hover {
+    filter: brightness(1.06);
+  }
+
+  .app-primary-btn:active {
+    transform: scale(0.98);
+    filter: brightness(0.96);
+  }
+
+  .app-primary-btn:disabled {
+    opacity: 0.55;
+    filter: none;
+    box-shadow: none;
+  }
+
+  /* 彈窗標題列 */
+  .app-modal-header {
+    color: #ffffff;
+    background-image: linear-gradient(
+      115deg,
+      var(--color-app-header-from) 0%,
+      var(--color-app-header-via) 50%,
+      var(--color-app-header-to) 100%
+    );
+  }
+
+  /* 新增纪录高亮：浅色暖黄、深色青蓝，各自针对背景对比优化 */
+  .record-row-highlight {
+    border-left-width: 5px;
+    border-left-style: solid;
+    background-color: #fde68a; /* amber-200 */
+    border-left-color: #d97706; /* amber-600 */
+    transition: background-color 1s ease, box-shadow 1s ease, border-color 1s ease;
+    animation: recordHighlightPulseLight 2.5s ease-in-out infinite;
+  }
+
+  &:where(.dark, .dark *) .record-row-highlight {
+    background-color: rgb(8 47 73 / 0.72); /* sky-950 tint on slate table */
+    border-left-color: #38bdf8; /* sky-400 */
+    animation: recordHighlightPulseDark 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes recordHighlightPulseLight {
+  0%,
+  100% {
+    box-shadow: inset 2px 0 0 rgb(245 158 11 / 0.55);
+  }
+  50% {
+    box-shadow: inset 3px 0 0 rgb(217 119 6 / 0.9);
+  }
+}
+
+@keyframes recordHighlightPulseDark {
+  0%,
+  100% {
+    box-shadow: inset 2px 0 0 rgb(56 189 248 / 0.45);
+  }
+  50% {
+    box-shadow: inset 3px 0 0 rgb(125 211 252 / 0.95);
+  }
+}

@@ -1,0 +1,54 @@
+# Android 構建文件
+*.apk
+*.aab
+*.ap_*
+*.idsig
+*.dex
+*.class
+bin/
+gen/
+out/
+build/
+app/build/
+.gradle/
+local.properties
+
+# 簽名密鑰（重要！不要提交）
+*.keystore
+*.jks
+*.pem
+*.p12
+
+# Gradle 配置（包含敏感信息）
+gradle.properties
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.DS_Store
+
+# Node
+node_modules/
+dist/
+*.log
+npm-debug.log*
+
+# 其他
+*.swp
+*.swo
+*~
+.cache/
+
+# 臨時文件
+manifest-checksum.txt
+metadata.json
+BUILD_SUCCESS.md
+
+# 嵌入的 Git 倉庫
+rong-bit.github.io/
+
+.vercel
+.env*

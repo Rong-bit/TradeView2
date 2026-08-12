@@ -1,0 +1,25 @@
+name: Cleanup Old Workflow Runs
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 每天執行
+  workflow_dispatch:   # 這是最關鍵的：讓你現在能手動點擊執行
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup old workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          # 設為 0 代表「不限天數」，只要符合條件就刪除，這樣才能清掉你那 61 個紀錄
+          retain_days: 0
+          keep_minimum_runs: 0
+          # 刪除所有失敗、取消等非成功狀態
+          delete_run_by_conclusion_pattern: "action_required,cancelled,failure,skipped,stale,timed_out"

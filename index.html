@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f2744" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- 禁止 iOS/Android 自動將數字辨識為電話號碼 -->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- 修改為相對路徑，確保在子目錄下能讀取 -->
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon-512.png">
+    <link rel="stylesheet" href="./assets/tailwind.css">
+    <title>TradeView</title>
+    <!-- 環境偵測須最早執行（實機 Capacitor 與模擬器協定可能不同） -->
+    <script>
+      (function () {
+        var ua = navigator.userAgent || '';
+        var host = location.hostname;
+        var proto = location.protocol;
+
+        function isEmbeddedApp() {
+          if (proto === 'capacitor:' || proto === 'ionic:' || proto === 'file:') return true;
+          if (host !== 'localhost' && host !== '127.0.0.1') return false;
+          if (window.webkit && window.webkit.messageHandlers) return true;
+          if (/Android/i.test(ua) && /; wv\)/.test(ua)) return true;
+          if (/iPhone|iPad|iPod/i.test(ua)) return true;
+          return false;
+        }
+
+        function isPublicWebsite() {
+          return (proto === 'http:' || proto === 'https:') && host !== 'localhost' && host !== '127.0.0.1';
+        }
+
+        window.__IS_CAPACITOR_NATIVE__ = isEmbeddedApp();
+        window.__IS_PUBLIC_WEBSITE__ = isPublicWebsite();
+
+        if (window.__IS_CAPACITOR_NATIVE__) {
+          try {
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.getRegistrations().then(function (regs) {
+                regs.forEach(function (r) { r.unregister(); });
+              }).catch(function () {});
+            }
+            if ('caches' in window) {
+              caches.keys().then(function (keys) {
+                return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+              }).catch(function () {});
+            }
+          } catch (e) {}
+        }
+      })();
+    </script>
+    <style>
+      .dark body { background-color: #0b1220; color: #e2e8f0; }
+      .dark .bg-white { background-color: #1e293b !important; }
+      .dark .bg-slate-50 { background-color: #0b1220 !important; }
+      .dark .bg-slate-100 { background-color: #1e293b !important; }
+      .dark .text-slate-900 { color: #f1f5f9 !important; }
+      .dark .text-slate-800 { color: #e2e8f0 !important; }
+      .dark .text-slate-700 { color: #cbd5e1 !important; }
+      .dark .text-slate-600 { color: #94a3b8 !important; }
+      .dark .border-slate-100 { border-color: #334155 !important; }
+      .dark .border-slate-200 { border-color: #334155 !important; }
+      .dark .border-slate-300 { border-color: #475569 !important; }
+      .dark .divide-slate-100 > * + * { border-color: #334155 !important; }
+      .dark td.sticky, .dark th.sticky { background-color: #1e293b !important; }
+      body, .bg-white, .bg-slate-50 { transition: background-color 0.25s, color 0.25s; }
+      /* Brush 年份文字顏色 */
+      .recharts-brush-texts text { fill: #475569 !important; font-size: 10px; }
+      .recharts-brush-slide { fill: #e2e8f0 !important; }
+      .dark .recharts-brush-texts text { fill: #cbd5e1 !important; }
+      .dark .recharts-brush-slide { fill: #334155 !important; }
+      /* Date input calendar icon contrast */
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0.85;
+      }
+      .dark input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1) brightness(1.15);
+        opacity: 0.95;
+      }
+      /* 選取反白：覆蓋暗色模式下強制淺色字，避免看不清 */
+      ::selection {
+        background-color: #c7d2fe !important;
+        color: #0f172a !important;
+      }
+      .dark ::selection {
+        background-color: #4f46e5 !important;
+        color: #ffffff !important;
+      }
+    </style>
+    <script>
+      (function() {
+        if (window.__IS_CAPACITOR_NATIVE__) return;
+        var s = localStorage.getItem('tf-dark-mode');
+        if (s === 'true' || (s === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <script>
+      (function () {
+        if (!window.__IS_CAPACITOR_NATIVE__) return;
+        var ua = navigator.userAgent || '';
+        if (!/iPhone|iPad|iPod/i.test(ua)) return;
+        var max = Math.max(screen.height, screen.width);
+        var min = Math.min(screen.height, screen.width);
+        var top = max >= 852 && min >= 393 ? 59 : max >= 812 ? 47 : 20;
+        document.documentElement.style.setProperty('--app-safe-area-top', top + 'px');
+      })();
+    </script>
+</head>
+  <body class="app-page-shell text-slate-900 antialiased" style="background-color:#eef6ff;min-height:100vh;margin:0;">
+    <div id="root"></div>
+    <script>
+      function showBootError(msg) {
+        var root = document.getElementById('root');
+        if (!root) return;
+        root.innerHTML = '<div style="padding:24px;font-family:system-ui,sans-serif;color:#b91c1c;white-space:pre-wrap;">' + msg + '</div>';
+      }
+      window.addEventListener('error', function (e) {
+        showBootError('啟動錯誤：\\n' + (e.message || e.error || 'unknown'));
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        var reason = e.reason && (e.reason.message || String(e.reason));
+        showBootError('啟動錯誤：\\n' + (reason || 'promise rejected'));
+      });
+      if ('serviceWorker' in navigator && window.__IS_PUBLIC_WEBSITE__) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('./sw.js').catch(function () {});
+        });
+      }
+    </script>
+    <script type="module" src="./index.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+﻿count: 215
+accounts.add	?啣?
+accounts.annualInterestRate	撟游??(%)
+accounts.cancel	??
+accounts.currencyAUD	瞉喳?
+accounts.currencyCAD	??
+accounts.debtBalance	甈狡?祇?
+accounts.update	?湔
+appMessages.alertTitleInfo	?內
+appMessages.cashFlowDeleteWarningTitle	?? 瘜冽?
+appMessages.dateLabel	?交?嚗?appMessages.updateSuccessTitle	?湔??
+baseCurrency.CAD	??
+batchCashFlowModal.cancel	??
+batchCashFlowModal.colDate	?交?
+batchCashFlowModal.failedLabel	?芣???batchCashFlowModal.successLabel	??
+batchImportModal.cancel	??
+batchImportModal.previewFailed	?芣???batchImportModal.previewSuccess	??
+common.cancel	??
+dashboard.analyzing	??銝?..
+dashboard.attention	瘜冽?
+dashboard.chartLabels.estimated	 (隡啁?)
+dashboard.chartLabels.profit	?
+dashboard.chartLabels.toDate	?喃?
+dashboard.clearTickerOverride	皜
+dashboard.date	?交?
+dashboard.equityLabelShort	??dashboard.marketValueNT	撣?dashboard.tickerPlaceholderExamples	靘?嚗GG / TLT / BND
+dashboard.twdCost	? ({currency})
+dashboard.usd	蝢?
+dashboard.year	撟港遢
+dashboard.yearlyFlowIn	撟游漲瘚
+dashboard.yearlyFlowOut	撟游漲瘚
+dashboard.yearlyIncome	撟游漲?/?拇
+debt.acknowledgePaid	蝣箄?撌脣撣?debt.leverageNetNote	瘛冽??亙?硫?亙蝝?{amount}嚗?祉?閫??隢??芣?鞈???閰摯??debt.notAdvice	??????鞈遣霅堆??臬??隢銵?隡啜?debt.paymentAlertBody	?name}????{days} 憭拙?嚗date}嚗甈曄? {amount}嚗?蝣箄?撣單擗???debt.paymentAlertTitle	靽∟硫蝜單狡??
+debt.remindLater	蝔???
+debt.spreadBody	?name}????{ret}% 雿?硫? {rate}%嚗?摰??銝雲嚗?debt.spreadDangerTitle	憟?榆霅衣內
+debt.spreadWarningTitle	?拙榆???內
+dividendHeatmap.bestMonth	?雿單?隞?dividendHeatmap.less	撠?dividendHeatmap.more	憭?dividendTax.pendingActualPerShare	瘥?⊥
+dividendTax.upcomingExDate	?斗??dividendTax.usBadgeShort	70%
+fundForm.backToEdit	餈?靽格
+fundForm.cancel	??
+fundForm.confirmExecute	蝣箄??瑁?
+fundForm.date	?交?
+fundForm.dateLabel	?交?嚗?fundForm.fees	??鞎?({currency})
+fundForm.feesLabel	??鞎鳴?
+fundForm.jpyConversion	?亙馳??
+fundForm.recurringDayShort	瘥? {day} ??繚 {account} 繚 {amount} {ccy}
+fundForm.recurringLastApplied	銝活撌脣??剁?{period}
+fundForm.recurringLeadDays	????嚗予嚗?fundForm.recurringNoteBadge	摰?
+fundForm.typeInterest	?拇?嗅 (Interest)
+fundForm.usdConversion	蝢???
+funds.dateFrom	韏瑕??交?
+funds.interest	?拇
+funds.last30Days	?餈?0憭?funds.thisYear	隞僑
+help.androidPublish	銝摰?????
+historicalModal.batchProgress	????銝?{current}/{total}嚗year} 撟湛?
+historicalModal.cancel	??
+historicalModal.yearOption	{year} 撟?history.clearAll	皜征??漱??history.last30Days	?餈?0憭?history.thisYear	隞僑
+holdings.annualizedROI	撟游?
+holdings.marketValue	撣?holdings.weight	瘥?
+labels.action	??
+labels.date	?交?
+marketChart.value	撣?nav.logout	?餃
+nav.rebalance	?像銵?nav.splits	?∠巨??
+pages.splits	?∠巨??蝞∠?
+purchaseModal.monthlyPrice	NT$ 60/??purchaseModal.yearlyPrice	NT$ 590/撟?rebalance.accountCount	?董??rebalance.accountLabel	(撣單)
+rebalance.accounts	?董??rebalance.adjustAmount	隤踵??
+rebalance.buy	鞎?rebalance.cash	?暸?
+rebalance.currentPrice	?曉
+rebalance.currentValue	?曉?rebalance.currentWeight	?桀?雿?
+rebalance.description	隤芣?嚗?rebalance.description1	?詨??迂????雿菟＊蝷綽??格?雿????曉潭?靘??策?董?嗚?rebalance.description2	?暸?像銵～?雿??豢??芯??∪?閬?撟唾﹛嚗?暸???桀?銝???撟唾﹛閮???rebalance.description3	?暸??典?銋隞亙?賂??亙?貊???臭誑??閮剖??暸??格?瘥?嚗銝?賂??暸?撠雁????rebalance.description4	?格?雿???摮?芣??身摰?璅?蝟餌絞???蝞擗?靘??策?暸?嚗??閮剖??暸??格?嚗?雿輻?刻身摰??潦?rebalance.description5	?乓?璅?靘鞎潘?隞?”?函??∠巨?格??蔭頞? 100%嚗?隤輸??典???格???rebalance.description6	暺??葆?亦???敹恍?蝵格??璅潛?嗅??暹???rebalance.enable	撟唾﹛
+rebalance.notParticipating	銝??像銵?rebalance.remainingFunds	?拚?鞈?
+rebalance.resetToCurrent	撣嗅?桀?瘥?
+rebalance.sell	鞈?rebalance.sharesLabel	(??
+rebalance.suggestedAction	撱箄降??
+rebalance.symbol	璅?
+rebalance.targetValue	?格??孵?rebalance.targetWeight	?格?雿?
+rebalance.title	??像銵?rebalance.totalAssets	蝮質???(?怎??
+rebalance.totalEnabled	撌脣??券???rebalance.totalLabel	蝮質? (
+simulator.action	??
+simulator.add	瘛餃?
+simulator.addAll	?寥?瘛餃????simulator.addRow	瘛餃?銵?simulator.allocation	?蔭瘥?
+simulator.cancel	??
+simulator.clearAll	皜征?券
+simulator.initial	??
+simulator.marketAU	瞉單散
+simulator.marketBR	撌渲正
+simulator.marketCA	?憭?simulator.marketHK	擐葛
+simulator.marketIN	?啣漲
+simulator.marketJP	?亥
+simulator.marketTW	?啗
+simulator.marketUK	?梯
+simulator.marketUS	蝢
+simulator.monthly	瘥??
+simulator.quarterly	瘥迤?
+simulator.tickerPlaceholder	靘?: 0050
+simulator.year	撟港遢
+simulator.yearPrefix	蝚?simulator.yearSuffix	撟?simulator.yearly	瘥僑?
+simulator.yearlyInvestment	撟游漲?
+stockSplit.addButton	?啣??∠巨??鈭辣
+stockSplit.addSuccess	撌脫憓蟡冽???隞?stockSplit.dateRequired	隢?????stockSplit.deleteConfirmMessage	蝣箏?閬??{ticker}嚗date}嚗???鈭辣??
+stockSplit.deleteConfirmTitle	蝣箄??芷??鈭辣
+stockSplit.deleteSuccess	撌脣?方蟡冽???隞?stockSplit.duplicateError	???∠巨???渲????亙歇摮??鈭辣
+stockSplit.effectiveDate	???交?
+stockSplit.emptyList	撠??鈭辣
+stockSplit.hint	鈭斗?蝝?雁?????⊥??潘???鈭辣?閮??????????亥?矽?氬???亙??漱?歇?寧??敺?賂?隢???駁???stockSplit.invalidRatio	?????⊥?甇???stockSplit.listTitle	撌脰身摰??∠巨??
+stockSplit.market	撣
+stockSplit.note	?酉
+stockSplit.notePlaceholder	靘?嚗?024 撟?1 ?蟡冽???stockSplit.sharesFrom	?????stockSplit.sharesTo	??敺??stockSplit.splitRatio	??瘥?
+stockSplit.ticker	?∠巨隞??
+stockSplit.tickerPlaceholder	靘?嚗?330?APL
+stockSplit.tickerRequired	隢撓?亥蟡其誨??stockSplit.title	?∠巨??蝞∠?
+stockSplit.totalCount	??{count} 蝑?stockTimeline.avgCost	????stockTimeline.holdingQty	????stockTimeline.holdingTitle	??銝?stockTimeline.legendCashDividend	??stockTimeline.legendHolding	??銝?stockTimeline.legendStockDividend	??stockTimeline.statusAll	?券
+stockTimeline.statusHolding	??銝?transactionForm.addTransaction	?啣?鈭斗?
+transactionForm.availableTransferOutQuantity	?舐嚗quantity} {shares}
+transactionForm.backToEdit	餈?靽格
+transactionForm.calculationFormula	閮??砍?嚗?transactionForm.cancel	??
+transactionForm.date	?交?
+transactionForm.dateLabel	?交?嚗?transactionForm.editTransaction	蝺刻摩鈭斗?
+transactionForm.fees	??鞎?/ 蝔?
+transactionForm.feesLabel	??鞎鳴?
+transactionForm.feesShort	??鞎?transactionForm.formulaNote	 (?啗???)
+transactionForm.market	撣
+transactionForm.marketAU	瞉單散 (AU)
+transactionForm.marketBR	撌渲正 (BR)
+transactionForm.marketCA	?憭?(CA)
+transactionForm.marketCN	銝剖?皛?(CN)
+transactionForm.marketDE	敺瑕? (DE)
+transactionForm.marketFR	瘜? (FR)
+transactionForm.marketHK	擐葛 (HK)
+transactionForm.marketIN	?啣漲 (IN)
+transactionForm.marketJP	?交??(JP)
+transactionForm.marketKR	?? (KR)
+transactionForm.marketLabel	撣嚗?transactionForm.marketSA	瘝???(SA)
+transactionForm.marketSZ	銝剖?瘛?(SZ)
+transactionForm.marketTW	?啗 (TW)
+transactionForm.marketUK	?勗???(UK)
+transactionForm.marketUS	蝢 (US)
+transactionForm.placeholderPrice	?桀
+transactionForm.placeholderQuantity	?⊥蝮賡?
+transactionForm.price	?寞
+transactionForm.priceLabel	?寞嚗?transactionForm.shares	??transactionForm.typeCashDividend	?暸??⊥ (Cash)
+transactionForm.typeDividend	?⊥????(DRIP)
+transactionForm.updateTransaction	?湔鈭斗?
+waterfall.byQuarter	?迤
+waterfall.byYear	?僑
+waterfall.dividend	??嗅
+waterfall.includingLabel	嚗{item}嚗?

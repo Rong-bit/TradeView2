@@ -941,11 +941,14 @@ export interface Translations {
     forceRefresh: string;
     /** {year} */
     yearEndDataTitle: string;
+    /** {year} {quarter} */
+    periodDataTitle: string;
     exchangeRateLabel: string;
     colMarket: string;
     colTicker: string;
-    /** {year} */
+    /** {date} */
     colClosePrice: string;
+    colClosePriceShort: string;
     noHoldingsThisYear: string;
     pricePlaceholder: string;
     hintTitle: string;

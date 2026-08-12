@@ -1040,8 +1040,9 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
           </div>
       </div>
 
-      {/* 3. List Table */}
-      <div className="app-section-card overflow-x-auto">
+      {/* 3. List Table：捲動放內層，避免 app-section-card 的 overflow:hidden 蓋掉滾輪 */}
+      <div className="app-section-card">
+        <div className="overflow-x-auto">
         <table className="min-w-full text-sm sm:text-base text-left">
           <thead className="bg-slate-50 text-slate-500 uppercase border-b border-slate-100 dark:border-slate-700">
             <tr>
@@ -1209,6 +1210,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
             )}
           </tbody>
         </table>
+        </div>
       </div>
       
       {/* 確認對話框 */}

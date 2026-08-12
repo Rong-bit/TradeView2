@@ -240,8 +240,9 @@ const HistoryView: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 交易記錄表 */}
-      <div className="app-section-card overflow-x-auto">
+      {/* 交易記錄表：捲動放內層，避免 app-section-card 的 overflow:hidden 蓋掉滾輪 */}
+      <div className="app-section-card">
+        <div className="overflow-x-auto">
         <table className="min-w-full text-xs sm:text-sm text-left">
           <thead className="bg-slate-50 text-slate-500 uppercase font-medium border-b border-slate-100 dark:border-slate-700">
             <tr>
@@ -412,6 +413,7 @@ const HistoryView: React.FC<Props> = ({
             </p>
           </div>
         )}
+        </div>
       </div>
         </div>
       )}

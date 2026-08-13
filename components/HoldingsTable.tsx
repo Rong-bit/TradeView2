@@ -80,6 +80,7 @@ const HoldingsTable: React.FC<Props> = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [displayMode, setDisplayMode] = useState<DisplayMode>('merged');
+  const [expandedAccountIds, setExpandedAccountIds] = useState<Set<string>>(() => new Set());
   const cardRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollAnchorTopRef = useRef<number | null>(null);
@@ -93,8 +94,20 @@ const HoldingsTable: React.FC<Props> = () => {
     if (scrollContainerRef.current) {
       scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
     }
+    if (mode !== 'detailed') {
+      setExpandedAccountIds(new Set());
+    }
     setDisplayMode(mode);
   }, [displayMode]);
+
+  const toggleAccountExpanded = useCallback((accountId: string) => {
+    setExpandedAccountIds(prev => {
+      const next = new Set(prev);
+      if (next.has(accountId)) next.delete(accountId);
+      else next.add(accountId);
+      return next;
+    });
+  }, []);
 
   // 切換模式後補償高度差，避免整頁跳動
   useLayoutEffect(() => {
@@ -437,6 +450,7 @@ const HoldingsTable: React.FC<Props> = () => {
       groupedByAccount.map((group) => {
         const account = group.account;
         const accountHoldings = group.holdings;
+        const isExpanded = expandedAccountIds.has(account.id);
 
         const accountTotalCost = accountHoldings.reduce((sum, h) => sum + h.totalCost, 0);
         const accountTotalValue = accountHoldings.reduce((sum, h) => sum + h.currentValue, 0);
@@ -446,18 +460,33 @@ const HoldingsTable: React.FC<Props> = () => {
 
         return (
           <React.Fragment key={account.id}>
-            <tr className="bg-slate-700 text-white font-bold">
+            <tr
+              className="bg-slate-700 text-white font-bold cursor-pointer select-none hover:bg-slate-600 transition-colors"
+              onClick={() => toggleAccountExpanded(account.id)}
+              aria-expanded={isExpanded}
+            >
               <td
                 colSpan={2}
-                className={`${CELL_PAD} sticky left-0 z-20 bg-slate-700`}
+                className={`${CELL_PAD} sticky left-0 z-20 bg-inherit`}
                 style={{ width: MARKET_TICKER_WIDTH_PCT }}
               >
                 <div className="flex items-center gap-2 min-w-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`h-3.5 w-3.5 shrink-0 opacity-90 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
                   <span className="truncate">{account.name}</span>
                   <span className="text-xs font-normal opacity-75 shrink-0">({account.currency})</span>
+                  <span className="text-[10px] font-normal opacity-70 shrink-0">· {accountHoldings.length}</span>
                 </div>
               </td>
               <td className={`${CELL_PAD} text-right`}>-</td>
@@ -472,7 +501,7 @@ const HoldingsTable: React.FC<Props> = () => {
               <td className={`${CELL_PAD} text-right`}>-</td>
               <td className={`${CELL_PAD} text-right`}>-</td>
             </tr>
-            {accountHoldings.map((h) => renderHoldingRow(h, true))}
+            {isExpanded && accountHoldings.map((h) => renderHoldingRow(h, true))}
           </React.Fragment>
         );
       })

@@ -98,7 +98,6 @@ const StockSplitManager: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="app-section-card p-6">
-        <h3 className="font-bold text-lg mb-4">{ss.title}</h3>
         <p className="text-sm text-slate-500 mb-4">{ss.hint}</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -181,7 +180,7 @@ const StockSplitManager: React.FC = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2 app-primary-btn rounded-md transition"
+              className="px-6 py-2 app-primary-btn rounded-md transition shadow"
             >
               {ss.addButton}
             </button>

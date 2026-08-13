@@ -749,7 +749,7 @@ const AccountManager: React.FC<Props> = () => {
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 app-primary-btn rounded transition"
+                  className="px-4 py-2 app-primary-btn rounded transition shadow-sm"
                 >
                   {translations.accounts.updateAccount}
                 </button>
@@ -809,7 +809,7 @@ const AccountManager: React.FC<Props> = () => {
               <button
                 type="button"
                 onClick={confirmHide}
-                className="px-4 py-2 app-primary-btn rounded transition"
+                className="px-4 py-2 app-primary-btn rounded transition shadow-sm"
               >
                 {translations.accounts.hideAccount}
               </button>

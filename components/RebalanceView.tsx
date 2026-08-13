@@ -310,8 +310,7 @@ const RebalanceView: React.FC<Props> = () => {
     <div className="space-y-6 min-w-0 max-w-full">
       <div className="app-section-card p-4 sm:p-6 min-w-0 max-w-full">
         <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:justify-between lg:items-start">
-          <h3 className="font-bold text-lg text-slate-800 shrink-0">{translations.rebalance.title}</h3>
-          <div className="flex flex-col gap-3 min-w-0 w-full lg:w-auto lg:items-end">
+          <div className="flex flex-col gap-3 min-w-0 w-full lg:w-auto lg:items-end lg:ml-auto">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2 w-full lg:justify-end">
               {/* 貨幣切換開關 */}
               <div className="flex items-center gap-2 min-w-0">

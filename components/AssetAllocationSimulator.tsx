@@ -676,12 +676,12 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
               </tr>
             </thead>
             <tbody>
-              {inputRows.map(row => (
+              {inputRows.map((row, rowIndex) => (
                 <tr
                   key={row.id}
-                  className="hover:bg-slate-50"
+                  className={`hover:bg-slate-50${rowIndex < inputRows.length - 1 ? ' border-b border-slate-100' : ''}`}
                 >
-                  <td className={`px-2 sm:px-3 py-2 border-b border-slate-100 ${SIM_COL_TICKER}`}>
+                  <td className={`px-2 sm:px-3 py-2 ${SIM_COL_TICKER}`}>
                     <input
                       type="text"
                       value={row.ticker}
@@ -690,7 +690,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                       className={`w-full min-w-0 px-2 sm:px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-sm ${FORM_FIELD_THEME}`}
                     />
                   </td>
-                  <td className={`px-2 sm:px-3 py-2 border-b border-slate-100 ${SIM_COL_MARKET}`}>
+                  <td className={`px-2 sm:px-3 py-2 ${SIM_COL_MARKET}`}>
                     <select
                       value={row.market}
                       onChange={(e) => updateInputRow(row.id, 'market', e.target.value as Market)}
@@ -713,7 +713,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                       <option value={Market.BR}>{translations.simulator.marketBR}</option>
                     </select>
                   </td>
-                  <td className={`px-2 sm:px-3 py-2 border-b border-slate-100 ${SIM_COL_RETURN}`}>
+                  <td className={`px-2 sm:px-3 py-2 ${SIM_COL_RETURN}`}>
                     <div className="flex items-center gap-2 min-w-0">
                       <input
                         type="number"
@@ -747,7 +747,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                       )}
                     </div>
                   </td>
-                  <td className={`px-2 sm:px-3 py-2 border-b border-slate-100 ${SIM_COL_ALLOC}`}>
+                  <td className={`px-2 sm:px-3 py-2 ${SIM_COL_ALLOC}`}>
                     <input
                       type="number"
                       inputMode={INPUT_MODE_DECIMAL}
@@ -786,7 +786,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                       placeholder="0"
                     />
                   </td>
-                  <td className={`px-2 sm:px-3 py-2 text-center border-b border-slate-100 ${SIM_COL_ACTION}`}>
+                  <td className={`px-2 sm:px-3 py-2 text-center ${SIM_COL_ACTION}`}>
                     <button
                       onClick={() => removeInputRow(row.id)}
                       disabled={inputRows.length === 1}
@@ -811,7 +811,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
           </button>
           <button
             onClick={batchAddAssets}
-            className="px-6 py-2 app-primary-btn rounded-lg transition-all duration-150 font-medium"
+            className="px-6 py-2 app-primary-btn rounded-lg active:scale-95 active:shadow-inner transition-all duration-150 font-medium shadow-md hover:shadow-lg"
           >
             {translations.simulator.addAll}
           </button>
@@ -850,18 +850,19 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                 </tr>
               </thead>
               <tbody>
-                {assets.map(asset => {
+                {assets.map((asset, assetIndex) => {
+                  const currentTotal = assets.reduce((sum, a) => sum + a.allocation, 0);
                   return (
                     <tr
                       key={asset.id}
-                      className="hover:bg-slate-50"
+                      className={`hover:bg-slate-50${assetIndex < assets.length - 1 ? ' border-b border-slate-100' : ''}`}
                     >
-                      <td className="px-3 py-2 font-semibold text-slate-800 border-b border-slate-100">
+                      <td className="px-3 py-2 font-semibold text-slate-800">
                         {asset.ticker}
                         {asset.name && <span className="text-xs text-slate-500 ml-2">({asset.name})</span>}
                       </td>
-                      <td className="px-3 py-2 text-slate-600 border-b border-slate-100">{getMarketDisplayText(asset.market)}</td>
-                      <td className="px-3 py-2 text-right border-b border-slate-100">
+                      <td className="px-3 py-2 text-slate-600">{getMarketDisplayText(asset.market)}</td>
+                      <td className="px-3 py-2 text-right">
                         <input
                           type="number"
                           inputMode={INPUT_MODE_DECIMAL}
@@ -871,7 +872,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                           step="0.1"
                         />
                       </td>
-                      <td className="px-3 py-2 text-right border-b border-slate-100">
+                      <td className="px-3 py-2 text-right">
                         <input
                           type="number"
                           inputMode={INPUT_MODE_DECIMAL}
@@ -915,7 +916,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                           placeholder="0"
                         />
                       </td>
-                      <td className="px-3 py-2 text-right border-b border-slate-100">
+                      <td className="px-3 py-2 text-right">
                         <button
                           onClick={() => removeAsset(asset.id)}
                           className="text-red-500 hover:text-red-700 active:text-red-900 active:scale-95 transition-all duration-150 text-sm px-2 py-1 rounded hover:bg-red-50 active:bg-red-100"

@@ -20,7 +20,9 @@ type DisplayMode = 'merged' | 'detailed';
 const CELL_PAD = 'px-2 py-2';
 const HOLDINGS_TABLE_MIN_WIDTH = '62rem';
 const MARKET_WIDTH_PCT = '6.45%';
-const MARKET_TICKER_WIDTH_PCT = '14.51%';
+/** 明細帳戶列名稱跨 市場+代號 */
+const ACCOUNT_NAME_WIDTH_PCT = '14.51%';
+const ACCOUNT_NAME_COLSPAN = 2;
 
 function sanitizeAnnualized(v: number): number {
   if (!Number.isFinite(v)) return 0;
@@ -273,6 +275,32 @@ const HoldingsTable: React.FC<Props> = () => {
 
   const MS_ROW = '\x1e';
 
+  const renderDetailColumnHeaderRow = (rowKey: string) => (
+    <tr
+      key={rowKey}
+      className="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider"
+    >
+      <td className={`${CELL_PAD} sticky left-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>
+        {translations.holdings.market}
+      </td>
+      <td
+        className={`${CELL_PAD} sticky z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}
+        style={{ left: MARKET_WIDTH_PCT }}
+      >
+        {translations.holdings.ticker}
+      </td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.quantity}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.currentPrice}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.weight}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.cost}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.marketValue}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.profitLoss}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.annualizedROI}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.dailyChange}</td>
+      <td className={`${CELL_PAD} text-right border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.avgPrice}</td>
+    </tr>
+  );
+
   function renderHoldingRow(h: Holding, isDetailedMode: boolean = false) {
     const isProfit = h.unrealizedPL >= 0;
     const mergedCurrency =
@@ -460,20 +488,21 @@ const HoldingsTable: React.FC<Props> = () => {
 
         return (
           <React.Fragment key={account.id}>
+            {isExpanded && renderDetailColumnHeaderRow(`hdr-${account.id}`)}
             <tr
               className="bg-slate-700 text-white font-bold cursor-pointer select-none hover:bg-slate-600 transition-colors"
               onClick={() => toggleAccountExpanded(account.id)}
               aria-expanded={isExpanded}
             >
               <td
-                colSpan={2}
+                colSpan={ACCOUNT_NAME_COLSPAN}
                 className={`${CELL_PAD} sticky left-0 z-20 bg-inherit`}
-                style={{ width: MARKET_TICKER_WIDTH_PCT }}
+                style={{ width: ACCOUNT_NAME_WIDTH_PCT, minWidth: ACCOUNT_NAME_WIDTH_PCT }}
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-md bg-white/10 hover:bg-white/20 transition"
+                    className="inline-flex items-center justify-center shrink-0 rounded p-0.5 hover:bg-white/15 transition"
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleAccountExpanded(account.id);
@@ -487,10 +516,6 @@ const HoldingsTable: React.FC<Props> = () => {
                   </button>
                   <span className="truncate">{account.name}</span>
                   <span className="text-xs font-normal opacity-75 shrink-0">({account.currency})</span>
-                  <span className="text-[10px] font-normal opacity-70 shrink-0">· {accountHoldings.length}</span>
-                  <span className={`ml-auto text-[10px] font-normal opacity-80 shrink-0 ${isExpanded ? '' : 'opacity-60'}`}>
-                    {isExpanded ? '▾' : '▸'}
-                  </span>
                 </div>
               </td>
               <td className={`${CELL_PAD} text-right`}>-</td>
@@ -579,7 +604,8 @@ const HoldingsTable: React.FC<Props> = () => {
             <col style={{ width: '9.27%' }} />
             <col style={{ width: '8.09%' }} />
           </colgroup>
-          {/* 凍結標題列：垂直／水平捲動時表頭固定 */}
+          {/* 合併顯示，或明細且尚未展開任何帳戶時，顯示頂部標題 */}
+          {(displayMode === 'merged' || expandedAccountIds.size === 0) && (
           <thead className="text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider">
             <tr>
               <th className={`${CELL_PAD} sticky top-0 left-0 z-30 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.market}</th>
@@ -613,6 +639,7 @@ const HoldingsTable: React.FC<Props> = () => {
               <th className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.avgPrice}</th>
             </tr>
           </thead>
+          )}
           <tbody className="divide-y divide-slate-50 dark:divide-slate-700 bg-white dark:bg-slate-800">
             {tableBody}
           </tbody>

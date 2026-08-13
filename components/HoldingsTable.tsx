@@ -19,13 +19,18 @@ type DisplayMode = 'merged' | 'detailed';
 const MARKET_COL = 'w-16 min-w-[4rem] max-w-[4rem]';
 const TICKER_COL = 'w-[5rem] min-w-[5rem] max-w-[5rem]';
 const MARKET_TICKER_COL = 'w-[9rem] min-w-[9rem] max-w-[9rem]';
-const QUANTITY_COL = 'w-[5.25rem] min-w-[5.25rem]';
-const PRICE_COL = 'w-[5rem] min-w-[5rem]';
+const QUANTITY_COL = 'w-[5.25rem] min-w-[5.25rem] max-w-[5.25rem]';
+const PRICE_COL = 'w-[5rem] min-w-[5rem] max-w-[5rem]';
 const WEIGHT_COL = 'w-[5rem] min-w-[5rem] max-w-[5rem]';
-const ANNUALIZED_COL = 'w-[3.25rem] min-w-[3.25rem]';
+const COST_COL = 'w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem]';
+const VALUE_COL = 'w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem]';
+const PL_COL = 'w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem]';
+const ANNUALIZED_COL = 'w-[3.25rem] min-w-[3.25rem] max-w-[3.25rem]';
 const DAILY_CHANGE_COL = 'w-[5.75rem] min-w-[5.75rem] max-w-[5.75rem]';
-const AVG_PRICE_COL = 'w-[6.25rem] min-w-[6.25rem]';
+const AVG_PRICE_COL = 'w-[6.25rem] min-w-[6.25rem] max-w-[6.25rem]';
 const CELL_PAD = 'px-2 py-2';
+/** 11 欄固定寬加總，避免合併／明細切換時欄寬重算 */
+const HOLDINGS_TABLE_WIDTH = '62rem';
 
 function sanitizeAnnualized(v: number): number {
   if (!Number.isFinite(v)) return 0;
@@ -371,19 +376,19 @@ const HoldingsTable: React.FC<Props> = () => {
           </div>
         </td>
 
-        <td className={`${CELL_PAD} text-right font-medium text-slate-600 dark:text-slate-100`}>
+        <td className={`${CELL_PAD} text-right font-medium text-slate-600 dark:text-slate-100 ${COST_COL}`}>
           {formatCurrency(h.totalCost, currency)}
         </td>
 
         <td
-          className={`${CELL_PAD} text-right font-medium`}
+          className={`${CELL_PAD} text-right font-medium ${VALUE_COL}`}
           style={{ color: isDarkMode ? "#94a3b8" : "#64748b" }}
         >
           {formatCurrency(h.currentValue, currency)}
         </td>
 
         <td
-          className={`${CELL_PAD} text-right font-bold ${plColor}`}
+          className={`${CELL_PAD} text-right font-bold ${plColor} ${PL_COL}`}
         >
           <div className="flex flex-col items-end leading-tight">
             <span>{formatCurrency(h.unrealizedPL, currency)}</span>
@@ -463,9 +468,9 @@ const HoldingsTable: React.FC<Props> = () => {
               <td className={`${CELL_PAD} text-right ${QUANTITY_COL}`}>-</td>
               <td className={`${CELL_PAD} text-right ${PRICE_COL}`}>-</td>
               <td className={`${CELL_PAD} text-right ${WEIGHT_COL}`}>{accountTotalWeight.toFixed(1)}%</td>
-              <td className={`${CELL_PAD} text-right`}>{formatCurrency(accountTotalCost, currency)}</td>
-              <td className={`${CELL_PAD} text-right`}>{formatCurrency(accountTotalValue, currency)}</td>
-              <td className={`${CELL_PAD} text-right ${accountTotalPL >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>
+              <td className={`${CELL_PAD} text-right ${COST_COL}`}>{formatCurrency(accountTotalCost, currency)}</td>
+              <td className={`${CELL_PAD} text-right ${VALUE_COL}`}>{formatCurrency(accountTotalValue, currency)}</td>
+              <td className={`${CELL_PAD} text-right ${PL_COL} ${accountTotalPL >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>
                 {formatCurrency(accountTotalPL, currency)}
               </td>
               <td className={`${CELL_PAD} text-right ${ANNUALIZED_COL}`}>-</td>
@@ -529,16 +534,16 @@ const HoldingsTable: React.FC<Props> = () => {
         className="overflow-x-auto"
         style={{ scrollbarGutter: 'stable' }}
       >
-        <table className="min-w-full table-fixed text-sm text-left">
+        <table className="table-fixed text-sm text-left" style={{ width: HOLDINGS_TABLE_WIDTH }}>
           <colgroup>
             <col style={{ width: '4rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5.25rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
-            <col />
-            <col />
-            <col />
+            <col style={{ width: '7.5rem' }} />
+            <col style={{ width: '7.5rem' }} />
+            <col style={{ width: '7.5rem' }} />
             <col style={{ width: '3.25rem' }} />
             <col style={{ width: '5.75rem' }} />
             <col style={{ width: '6.25rem' }} />
@@ -554,13 +559,13 @@ const HoldingsTable: React.FC<Props> = () => {
                 className={`${CELL_PAD} ${WEIGHT_COL} text-right cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('weight')}
               >{translations.holdings.weight}<SortIcon col="weight" /></th>
-              <th className={`${CELL_PAD} text-right`}>{translations.holdings.cost}</th>
+              <th className={`${CELL_PAD} text-right ${COST_COL}`}>{translations.holdings.cost}</th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none ${VALUE_COL}`}
                 onClick={() => handleSort('currentValue')}
               >{translations.holdings.marketValue}<SortIcon col="currentValue" /></th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none ${PL_COL}`}
                 onClick={() => handleSort('unrealizedPL')}
               >{translations.holdings.profitLoss}<SortIcon col="unrealizedPL" /></th>
               <th

@@ -526,7 +526,7 @@ const HoldingsTable: React.FC<Props> = () => {
       </div>
       <div
         ref={scrollContainerRef}
-        className="overflow-x-auto"
+        className="overflow-auto max-h-[min(65vh,36rem)]"
         style={{ scrollbarGutter: 'stable' }}
       >
         <table
@@ -546,38 +546,38 @@ const HoldingsTable: React.FC<Props> = () => {
             <col style={{ width: '9.27%' }} />
             <col style={{ width: '10.09%' }} />
           </colgroup>
-          {/* ⑤ Sortable headers */}
-          <thead className="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider border-b border-slate-100 dark:border-slate-700">
+          {/* 凍結標題列：垂直／水平捲動時表頭固定 */}
+          <thead className="text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider">
             <tr>
-              <th className={`${CELL_PAD} sticky left-0 z-10 bg-white dark:bg-slate-800`}>{translations.holdings.market}</th>
+              <th className={`${CELL_PAD} sticky top-0 left-0 z-30 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.market}</th>
               <th
-                className={`${CELL_PAD} sticky z-10 bg-white dark:bg-slate-800`}
+                className={`${CELL_PAD} sticky top-0 z-30 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}
                 style={{ left: MARKET_WIDTH_PCT }}
               >{translations.holdings.ticker}</th>
-              <th className={`${CELL_PAD} text-right`}>{translations.holdings.quantity}</th>
-              <th className={`${CELL_PAD} text-right`}>{translations.holdings.currentPrice}</th>
+              <th className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.quantity}</th>
+              <th className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.currentPrice}</th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('weight')}
               >{translations.holdings.weight}<SortIcon col="weight" /></th>
-              <th className={`${CELL_PAD} text-right`}>{translations.holdings.cost}</th>
+              <th className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.cost}</th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('currentValue')}
               >{translations.holdings.marketValue}<SortIcon col="currentValue" /></th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('unrealizedPL')}
               >{translations.holdings.profitLoss}<SortIcon col="unrealizedPL" /></th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('annualizedReturn')}
               >{translations.holdings.annualizedROI}<SortIcon col="annualizedReturn" /></th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('dailyChangePercent')}
               >{translations.holdings.dailyChange}<SortIcon col="dailyChangePercent" /></th>
-              <th className={`${CELL_PAD} text-right`}>{translations.holdings.avgPrice}</th>
+              <th className={`${CELL_PAD} sticky top-0 z-20 text-right bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.avgPrice}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50 dark:divide-slate-700 bg-white dark:bg-slate-800">

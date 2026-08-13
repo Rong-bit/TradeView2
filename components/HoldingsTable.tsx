@@ -16,21 +16,11 @@ interface Props {}
 
 type DisplayMode = 'merged' | 'detailed';
 
-const MARKET_COL = 'w-16 min-w-[4rem] max-w-[4rem]';
-const TICKER_COL = 'w-[5rem] min-w-[5rem] max-w-[5rem]';
-const MARKET_TICKER_COL = 'w-[9rem] min-w-[9rem] max-w-[9rem]';
-const QUANTITY_COL = 'w-[5.25rem] min-w-[5.25rem] max-w-[5.25rem]';
-const PRICE_COL = 'w-[5rem] min-w-[5rem] max-w-[5rem]';
-const WEIGHT_COL = 'w-[5rem] min-w-[5rem] max-w-[5rem]';
-const COST_COL = 'w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem]';
-const VALUE_COL = 'w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem]';
-const PL_COL = 'w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem]';
-const ANNUALIZED_COL = 'w-[3.25rem] min-w-[3.25rem] max-w-[3.25rem]';
-const DAILY_CHANGE_COL = 'w-[5.75rem] min-w-[5.75rem] max-w-[5.75rem]';
-const AVG_PRICE_COL = 'w-[6.25rem] min-w-[6.25rem] max-w-[6.25rem]';
+/** 比例由 colgroup 決定；勿再加 max-w，否則無法撐滿容器 */
 const CELL_PAD = 'px-2 py-2';
-/** 11 欄固定寬加總，避免合併／明細切換時欄寬重算 */
-const HOLDINGS_TABLE_WIDTH = '62rem';
+const HOLDINGS_TABLE_MIN_WIDTH = '62rem';
+const MARKET_WIDTH_PCT = '6.45%';
+const MARKET_TICKER_WIDTH_PCT = '14.51%';
 
 function sanitizeAnnualized(v: number): number {
   if (!Number.isFinite(v)) return 0;
@@ -308,7 +298,7 @@ const HoldingsTable: React.FC<Props> = () => {
           e.currentTarget.style.backgroundColor = '';
         }}
       >
-        <td className={`${CELL_PAD} sticky left-0 z-10 bg-white dark:bg-slate-800 ${MARKET_COL}`}>
+        <td className={`${CELL_PAD} sticky left-0 z-10 bg-white dark:bg-slate-800`}>
           <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wide border ${
             h.market === Market.US ? 'bg-blue-50 text-blue-600 border-blue-100' :
             h.market === Market.UK ? 'bg-purple-50 text-purple-600 border-purple-100' :
@@ -329,11 +319,14 @@ const HoldingsTable: React.FC<Props> = () => {
           </span>
         </td>
 
-        <td className={`${CELL_PAD} sticky left-16 z-10 bg-white dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-100 truncate ${TICKER_COL}`}>
+        <td
+          className={`${CELL_PAD} sticky z-10 bg-white dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-100 truncate`}
+          style={{ left: MARKET_WIDTH_PCT }}
+        >
           {h.ticker}
         </td>
 
-        <td className={`${CELL_PAD} text-right font-mono transition-colors text-slate-600 dark:text-slate-100 text-xs sm:text-sm ${QUANTITY_COL}`}>
+        <td className={`${CELL_PAD} text-right font-mono transition-colors text-slate-600 dark:text-slate-100 text-xs sm:text-sm`}>
           {(() => {
             const num = h.quantity;
             if (num % 1 === 0) {
@@ -344,11 +337,11 @@ const HoldingsTable: React.FC<Props> = () => {
           })()}
         </td>
 
-        <td className={`${CELL_PAD} text-right font-mono tabular-nums text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 ${PRICE_COL}`}>
+        <td className={`${CELL_PAD} text-right font-mono tabular-nums text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100`}>
           {formatHoldingPrice(displayCurrentPrice, currency)}
         </td>
 
-        <td className={`${CELL_PAD} ${WEIGHT_COL}`}>
+        <td className={CELL_PAD}>
           <div className="flex flex-col gap-1">
             <span
               className={`text-xs font-medium text-right ${
@@ -376,31 +369,29 @@ const HoldingsTable: React.FC<Props> = () => {
           </div>
         </td>
 
-        <td className={`${CELL_PAD} text-right font-medium text-slate-600 dark:text-slate-100 ${COST_COL}`}>
+        <td className={`${CELL_PAD} text-right font-medium text-slate-600 dark:text-slate-100`}>
           {formatCurrency(h.totalCost, currency)}
         </td>
 
         <td
-          className={`${CELL_PAD} text-right font-medium ${VALUE_COL}`}
+          className={`${CELL_PAD} text-right font-medium`}
           style={{ color: isDarkMode ? "#94a3b8" : "#64748b" }}
         >
           {formatCurrency(h.currentValue, currency)}
         </td>
 
-        <td
-          className={`${CELL_PAD} text-right font-bold ${plColor} ${PL_COL}`}
-        >
+        <td className={`${CELL_PAD} text-right font-bold ${plColor}`}>
           <div className="flex flex-col items-end leading-tight">
             <span>{formatCurrency(h.unrealizedPL, currency)}</span>
             <span className="text-[10px] opacity-80">{isProfit ? '+' : ''}{h.unrealizedPLPercent.toFixed(2)}%</span>
           </div>
         </td>
 
-        <td className={`${CELL_PAD} text-right font-bold ${roiColor} ${ANNUALIZED_COL}`}>
+        <td className={`${CELL_PAD} text-right font-bold ${roiColor}`}>
           {h.annualizedReturn && h.annualizedReturn !== 0 ? `${h.annualizedReturn.toFixed(1)}%` : '-'}
         </td>
 
-        <td className={`${CELL_PAD} text-right text-xs font-bold ${DAILY_CHANGE_COL} ${dailyChangeColor}`}>
+        <td className={`${CELL_PAD} text-right text-xs font-bold ${dailyChangeColor}`}>
           {h.dailyChange !== undefined && h.dailyChange !== null ? (
              <div className="flex flex-col items-end">
                <span>{h.dailyChange > 0 ? '+' : ''}{h.dailyChange.toFixed(2)}</span>
@@ -413,7 +404,7 @@ const HoldingsTable: React.FC<Props> = () => {
           )}
         </td>
 
-        <td className={`${CELL_PAD} text-right text-xs text-slate-600 dark:text-slate-100 ${AVG_PRICE_COL}`}>
+        <td className={`${CELL_PAD} text-right text-xs text-slate-600 dark:text-slate-100`}>
            {new Intl.NumberFormat('zh-TW', {
               style: 'currency',
               currency: currency,
@@ -456,7 +447,11 @@ const HoldingsTable: React.FC<Props> = () => {
         return (
           <React.Fragment key={account.id}>
             <tr className="bg-slate-700 text-white font-bold">
-              <td colSpan={2} className={`${CELL_PAD} sticky left-0 z-20 bg-slate-700 ${MARKET_TICKER_COL}`}>
+              <td
+                colSpan={2}
+                className={`${CELL_PAD} sticky left-0 z-20 bg-slate-700`}
+                style={{ width: MARKET_TICKER_WIDTH_PCT }}
+              >
                 <div className="flex items-center gap-2 min-w-0">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -465,17 +460,17 @@ const HoldingsTable: React.FC<Props> = () => {
                   <span className="text-xs font-normal opacity-75 shrink-0">({account.currency})</span>
                 </div>
               </td>
-              <td className={`${CELL_PAD} text-right ${QUANTITY_COL}`}>-</td>
-              <td className={`${CELL_PAD} text-right ${PRICE_COL}`}>-</td>
-              <td className={`${CELL_PAD} text-right ${WEIGHT_COL}`}>{accountTotalWeight.toFixed(1)}%</td>
-              <td className={`${CELL_PAD} text-right ${COST_COL}`}>{formatCurrency(accountTotalCost, currency)}</td>
-              <td className={`${CELL_PAD} text-right ${VALUE_COL}`}>{formatCurrency(accountTotalValue, currency)}</td>
-              <td className={`${CELL_PAD} text-right ${PL_COL} ${accountTotalPL >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>
+              <td className={`${CELL_PAD} text-right`}>-</td>
+              <td className={`${CELL_PAD} text-right`}>-</td>
+              <td className={`${CELL_PAD} text-right`}>{accountTotalWeight.toFixed(1)}%</td>
+              <td className={`${CELL_PAD} text-right`}>{formatCurrency(accountTotalCost, currency)}</td>
+              <td className={`${CELL_PAD} text-right`}>{formatCurrency(accountTotalValue, currency)}</td>
+              <td className={`${CELL_PAD} text-right ${accountTotalPL >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>
                 {formatCurrency(accountTotalPL, currency)}
               </td>
-              <td className={`${CELL_PAD} text-right ${ANNUALIZED_COL}`}>-</td>
-              <td className={`${CELL_PAD} text-right ${DAILY_CHANGE_COL}`}>-</td>
-              <td className={`${CELL_PAD} text-right ${AVG_PRICE_COL}`}>-</td>
+              <td className={`${CELL_PAD} text-right`}>-</td>
+              <td className={`${CELL_PAD} text-right`}>-</td>
+              <td className={`${CELL_PAD} text-right`}>-</td>
             </tr>
             {accountHoldings.map((h) => renderHoldingRow(h, true))}
           </React.Fragment>
@@ -534,49 +529,55 @@ const HoldingsTable: React.FC<Props> = () => {
         className="overflow-x-auto"
         style={{ scrollbarGutter: 'stable' }}
       >
-        <table className="table-fixed text-sm text-left" style={{ width: HOLDINGS_TABLE_WIDTH }}>
+        <table
+          className="w-full table-fixed text-sm text-left"
+          style={{ minWidth: HOLDINGS_TABLE_MIN_WIDTH }}
+        >
           <colgroup>
-            <col style={{ width: '4rem' }} />
-            <col style={{ width: '5rem' }} />
-            <col style={{ width: '5.25rem' }} />
-            <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} />
-            <col style={{ width: '7.5rem' }} />
-            <col style={{ width: '7.5rem' }} />
-            <col style={{ width: '7.5rem' }} />
-            <col style={{ width: '3.25rem' }} />
-            <col style={{ width: '5.75rem' }} />
-            <col style={{ width: '6.25rem' }} />
+            <col style={{ width: '6.45%' }} />
+            <col style={{ width: '8.06%' }} />
+            <col style={{ width: '8.47%' }} />
+            <col style={{ width: '8.06%' }} />
+            <col style={{ width: '8.06%' }} />
+            <col style={{ width: '12.1%' }} />
+            <col style={{ width: '12.1%' }} />
+            <col style={{ width: '12.1%' }} />
+            <col style={{ width: '5.24%' }} />
+            <col style={{ width: '9.27%' }} />
+            <col style={{ width: '10.09%' }} />
           </colgroup>
           {/* ⑤ Sortable headers */}
           <thead className="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider border-b border-slate-100 dark:border-slate-700">
             <tr>
-              <th className={`${CELL_PAD} sticky left-0 z-10 bg-white dark:bg-slate-800 ${MARKET_COL}`}>{translations.holdings.market}</th>
-              <th className={`${CELL_PAD} sticky left-16 z-10 bg-white dark:bg-slate-800 ${TICKER_COL}`}>{translations.holdings.ticker}</th>
-              <th className={`${CELL_PAD} text-right ${QUANTITY_COL}`}>{translations.holdings.quantity}</th>
-              <th className={`${CELL_PAD} text-right ${PRICE_COL}`}>{translations.holdings.currentPrice}</th>
+              <th className={`${CELL_PAD} sticky left-0 z-10 bg-white dark:bg-slate-800`}>{translations.holdings.market}</th>
               <th
-                className={`${CELL_PAD} ${WEIGHT_COL} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} sticky z-10 bg-white dark:bg-slate-800`}
+                style={{ left: MARKET_WIDTH_PCT }}
+              >{translations.holdings.ticker}</th>
+              <th className={`${CELL_PAD} text-right`}>{translations.holdings.quantity}</th>
+              <th className={`${CELL_PAD} text-right`}>{translations.holdings.currentPrice}</th>
+              <th
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('weight')}
               >{translations.holdings.weight}<SortIcon col="weight" /></th>
-              <th className={`${CELL_PAD} text-right ${COST_COL}`}>{translations.holdings.cost}</th>
+              <th className={`${CELL_PAD} text-right`}>{translations.holdings.cost}</th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none ${VALUE_COL}`}
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('currentValue')}
               >{translations.holdings.marketValue}<SortIcon col="currentValue" /></th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none ${PL_COL}`}
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('unrealizedPL')}
               >{translations.holdings.profitLoss}<SortIcon col="unrealizedPL" /></th>
               <th
-                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none ${ANNUALIZED_COL}`}
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('annualizedReturn')}
               >{translations.holdings.annualizedROI}<SortIcon col="annualizedReturn" /></th>
               <th
-                className={`${CELL_PAD} ${DAILY_CHANGE_COL} text-right cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${CELL_PAD} text-right cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('dailyChangePercent')}
               >{translations.holdings.dailyChange}<SortIcon col="dailyChangePercent" /></th>
-              <th className={`${CELL_PAD} text-right ${AVG_PRICE_COL}`}>{translations.holdings.avgPrice}</th>
+              <th className={`${CELL_PAD} text-right`}>{translations.holdings.avgPrice}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50 dark:divide-slate-700 bg-white dark:bg-slate-800">

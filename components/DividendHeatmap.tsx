@@ -711,7 +711,7 @@ const DividendHeatmap: React.FC = () => {
           <p className="text-sm text-slate-500 mt-0.5 leading-relaxed">{tr.dividendHeatmap.subtitle}</p>
         </div>
         <div className="text-right">
-          <div className="text-xs text-slate-400">{tr.dividendHeatmap.totalDividend}</div>
+          <div className="text-sm text-slate-400">{tr.dividendHeatmap.totalDividend}</div>
           <div className="text-lg font-bold text-amber-600">{fmt(totalDividend)} {baseCurrency}</div>
         </div>
       </div>
@@ -733,7 +733,7 @@ const DividendHeatmap: React.FC = () => {
 
             {displayYears.map(year => (
               <div key={year} className="flex items-center mb-1">
-                <div className="w-14 shrink-0 text-xs font-bold text-slate-600 pr-2 text-right">{year}</div>
+                <div className="w-14 shrink-0 text-sm font-bold text-slate-600 pr-2 text-right">{year}</div>
                 {Array.from({ length: 12 }, (_, m) => {
                   const cell = grid[year]?.[m];
                   const actualAmount = cell?.amount ?? 0;
@@ -769,7 +769,7 @@ const DividendHeatmap: React.FC = () => {
                     </div>
                   );
                 })}
-                <div className="w-20 shrink-0 text-xs font-bold text-amber-600 text-right pr-1 tabular-nums">
+                <div className="w-20 shrink-0 text-sm font-bold text-amber-600 text-right pr-1 tabular-nums">
                   {(yearTotals[year] ?? 0) > 0 ? fmt(yearTotals[year] ?? 0) : '—'}
                 </div>
               </div>

@@ -102,7 +102,7 @@ const HelpView: React.FC<Props> = ({
             <button
               type="button"
               onClick={onExport}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition shadow flex items-center justify-center gap-2"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-4 rounded transition shadow flex items-center justify-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -119,7 +119,7 @@ const HelpView: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full bg-white hover:bg-slate-50 text-slate-700 font-bold py-2 px-4 rounded border border-slate-300 transition shadow-sm flex items-center justify-center gap-2"
+                className="w-full bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold py-2 px-4 rounded border border-slate-300 transition shadow-sm flex items-center justify-center gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -145,7 +145,7 @@ const HelpView: React.FC<Props> = ({
             <button
               type="button"
               onClick={onOpenSubscription}
-              className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded shadow transition"
+              className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2 rounded shadow transition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
@@ -185,7 +185,7 @@ const HelpView: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => setShowDeleteAccountConfirm(true)}
-            className="px-4 py-2 rounded border-2 border-red-500 text-red-600 hover:bg-red-50 font-medium transition"
+            className="px-4 py-2 rounded border-2 border-red-500 text-red-600 hover:bg-red-50 text-sm font-medium transition"
           >
             {translations.help.deleteAppAccount}
           </button>
@@ -203,7 +203,7 @@ const HelpView: React.FC<Props> = ({
         <button
           type="button"
           onClick={onContactAdmin ?? (() => openMailTo(ADMIN_EMAIL))}
-          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded shadow transition"
+          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded shadow transition"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
@@ -275,7 +275,7 @@ const HelpView: React.FC<Props> = ({
             <h3 className="text-lg font-bold mb-2 text-red-600">
               {translations.help.confirmDeleteAppAccount}
             </h3>
-            <p className="text-slate-600 mb-6">
+            <p className="text-sm text-slate-600 mb-6">
               {translate('help.confirmDeleteAppAccountMessage', language, { user: currentUser })}
             </p>
             <div className="flex justify-center gap-4">
@@ -305,7 +305,7 @@ const HelpView: React.FC<Props> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fade-in">
           <div className="bg-white rounded-lg shadow-xl max-sm w-full p-6 text-center">
             <h3 className="text-lg font-bold mb-2 text-red-600">{translations.help.confirmImport}</h3>
-            <p className="text-slate-600 mb-6">
+            <p className="text-sm text-slate-600 mb-6">
               {translate('help.confirmImportMessage', language, { fileName: pendingImportFile.name })}
               <br />
               {translations.help.confirmImportWarning}

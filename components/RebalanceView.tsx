@@ -343,7 +343,7 @@ const RebalanceView: React.FC<Props> = () => {
               <button
                 type="button"
                 onClick={handleResetToCurrent}
-                className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded border border-slate-300 transition whitespace-normal text-left max-w-full"
+                className="text-sm bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded border border-slate-300 transition whitespace-normal text-left max-w-full"
               >
                 ↺ {translations.rebalance.resetToCurrent}
               </button>
@@ -358,18 +358,18 @@ const RebalanceView: React.FC<Props> = () => {
         </div>
 
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 max-w-full">
-          <table className="w-full min-w-[52rem] border-collapse text-xs sm:text-sm text-left">
+          <table className="w-full table-auto border-collapse text-sm text-left">
             <thead className="text-slate-500 font-medium border-b border-slate-100">
               <tr>
-                <th className="px-2 sm:px-3 py-2 w-12 whitespace-nowrap">{translations.rebalance.enable}</th>
-                <th className="px-2 sm:px-3 py-2 min-w-[7rem] whitespace-normal leading-tight">{translations.rebalance.symbol} {translations.rebalance.accountLabel}</th>
-                <th className="px-2 sm:px-3 py-2 text-right whitespace-normal leading-tight">{translations.rebalance.currentPrice}</th>
-                <th className="px-2 sm:px-3 py-2 text-right whitespace-normal leading-tight">{translations.rebalance.currentValue} ({displayCurrencyCode})</th>
-                <th className="px-2 sm:px-3 py-2 text-right whitespace-normal leading-tight">{translations.rebalance.currentWeight}</th>
-                <th className="px-2 sm:px-3 py-2 text-right w-28 sm:w-36 whitespace-normal leading-tight">{translations.rebalance.targetWeight} %</th>
-                <th className="px-2 sm:px-3 py-2 text-right whitespace-normal leading-tight">{translations.rebalance.targetValue}</th>
-                <th className="px-2 sm:px-3 py-2 text-right whitespace-normal leading-tight">{translations.rebalance.adjustAmount}</th>
-                <th className="px-2 sm:px-3 py-2 text-right min-w-[6rem] whitespace-normal leading-tight">{translations.rebalance.suggestedAction} {translations.rebalance.sharesLabel}</th>
+                <th className="px-2 sm:px-3 py-2 whitespace-nowrap">{translations.rebalance.enable}</th>
+                <th className="px-2 sm:px-3 py-2 whitespace-nowrap">{translations.rebalance.symbol} {translations.rebalance.accountLabel}</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.currentPrice}</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.currentValue} ({displayCurrencyCode})</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.currentWeight}</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.targetWeight} %</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.targetValue}</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.adjustAmount}</th>
+                <th className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.suggestedAction} {translations.rebalance.sharesLabel}</th>
               </tr>
             </thead>
             <tbody>
@@ -396,7 +396,7 @@ const RebalanceView: React.FC<Props> = () => {
                         className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                       />
                     </td>
-                    <td className="px-2 sm:px-3 py-2 font-semibold text-slate-700 dark:text-slate-200">
+                    <td className="px-2 sm:px-3 py-2 font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                       <div className="flex items-center">
                         <span className={`text-xs px-1.5 py-0.5 rounded mr-2 ${
                           row.market === Market.US ? 'bg-blue-100 text-blue-800' : 
@@ -423,16 +423,16 @@ const RebalanceView: React.FC<Props> = () => {
                         )}
                       </div>
                     </td>
-                    <td className="px-2 sm:px-3 py-2 text-right text-slate-500 dark:text-slate-300">
+                    <td className="px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap text-slate-500 dark:text-slate-300">
                       {row.currentPrice.toFixed(2)}
                     </td>
-                    <td className="px-2 sm:px-3 py-2 text-right font-mono text-slate-800 dark:text-slate-100 whitespace-nowrap">
+                    <td className="px-2 sm:px-3 py-2 text-right font-mono tabular-nums text-slate-800 dark:text-slate-100 whitespace-nowrap">
                       {formatCurrency(displayVal, displayCurrency)}
                     </td>
-                    <td className="px-2 sm:px-3 py-2 text-right text-slate-500">
+                    <td className="px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap text-slate-500">
                       {row.currentPct.toFixed(1)}%
                     </td>
-                    <td className="px-2 sm:px-3 py-2 text-right">
+                    <td className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">
                       <div className="flex justify-end items-center">
                         <input 
                           type="text"
@@ -449,13 +449,13 @@ const RebalanceView: React.FC<Props> = () => {
                         />
                       </div>
                     </td>
-                    <td className={`px-2 sm:px-3 py-2 text-right ${isEnabled ? 'text-slate-500' : 'text-slate-300'}`}>
+                    <td className={`px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap ${isEnabled ? 'text-slate-500' : 'text-slate-300'}`}>
                        {formatCurrency(displayTargetVal, displayCurrency)}
                     </td>
-                    <td className={`px-2 sm:px-3 py-2 text-right font-medium ${isEnabled ? (isBuy ? 'text-red-600' : 'text-green-600') : 'text-slate-300'}`}>
+                    <td className={`px-2 sm:px-3 py-2 text-right font-medium tabular-nums whitespace-nowrap ${isEnabled ? (isBuy ? 'text-red-600' : 'text-green-600') : 'text-slate-300'}`}>
                       {formatCurrency(displayDiffVal, displayCurrency)}
                     </td>
-                    <td className={`px-2 sm:px-3 py-2 text-right font-bold ${isEnabled ? (isBuy ? 'text-red-600' : 'text-green-600') : 'text-slate-300'}`}>
+                    <td className={`px-2 sm:px-3 py-2 text-right font-bold tabular-nums whitespace-nowrap ${isEnabled ? (isBuy ? 'text-red-600' : 'text-green-600') : 'text-slate-300'}`}>
                       {isEnabled ? (
                         <span>
                           {isBuy ? translations.rebalance.buy : translations.rebalance.sell} {Math.abs(row.diffShares).toFixed(row.market === Market.US || row.market === Market.UK || row.market === Market.CA || row.market === Market.FR ? 2 : 0)}
@@ -478,13 +478,13 @@ const RebalanceView: React.FC<Props> = () => {
                     className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                   />
                 </td>
-                <td className="px-2 sm:px-3 py-2 text-slate-700">{translations.rebalance.cash}</td>
-                <td className="px-2 sm:px-3 py-2 text-right">-</td>
-                <td className="px-2 sm:px-3 py-2 text-right font-mono">
+                <td className="px-2 sm:px-3 py-2 text-slate-700 whitespace-nowrap">{translations.rebalance.cash}</td>
+                <td className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">-</td>
+                <td className="px-2 sm:px-3 py-2 text-right font-mono tabular-nums whitespace-nowrap">
                   {formatCurrency(showInUSD ? summary.cashBalanceTWD / summary.exchangeRateUsdToTwd : toBase(summary.cashBalanceTWD), displayCurrencyCode)}
                 </td>
-                <td className="px-2 sm:px-3 py-2 text-right">{cashCurrentPctEnabled.toFixed(1)}%</td>
-                <td className="px-2 sm:px-3 py-2 text-right">
+                <td className="px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap">{cashCurrentPctEnabled.toFixed(1)}%</td>
+                <td className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">
                   <div className="flex justify-end items-center">
                     <input 
                       type="text"
@@ -501,21 +501,21 @@ const RebalanceView: React.FC<Props> = () => {
                     />
                   </div>
                 </td>
-                <td className={`px-2 sm:px-3 py-2 text-right ${isCashEnabled ? '' : 'text-slate-300'}`}>
+                <td className={`px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap ${isCashEnabled ? '' : 'text-slate-300'}`}>
                   {formatCurrency(showInUSD ? targetCashTwd / summary.exchangeRateUsdToTwd : toBase(targetCashTwd), displayCurrencyCode)}
                 </td>
-                <td className={`px-2 sm:px-3 py-2 text-right ${isCashEnabled ? (diffCashTwd > 0 ? 'text-blue-600' : 'text-slate-500') : 'text-slate-300'}`}>
+                <td className={`px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap ${isCashEnabled ? (diffCashTwd > 0 ? 'text-blue-600' : 'text-slate-500') : 'text-slate-300'}`}>
                   {formatCurrency(showInUSD ? diffCashTwd / summary.exchangeRateUsdToTwd : toBase(diffCashTwd), displayCurrencyCode)}
                 </td>
-                <td className="px-2 sm:px-3 py-2 text-right text-xs text-slate-400 whitespace-normal leading-tight">
+                <td className="px-2 sm:px-3 py-2 text-right text-slate-400 whitespace-nowrap">
                   {isCashEnabled ? `(${translations.rebalance.remainingFunds})` : `(${translations.rebalance.notParticipating})`}
                 </td>
               </tr>
             </tbody>
             <tfoot className="bg-slate-100 font-bold border-t border-slate-100">
                <tr>
-                 <td colSpan={5} className="px-2 sm:px-3 py-2 text-right whitespace-normal leading-tight">{translations.rebalance.totalLabel}{translations.rebalance.totalEnabled})</td>
-                 <td className={`px-2 sm:px-3 py-2 text-right ${Math.abs(totalTargetPct + cashTargetPct - 100) > 0.01 ? 'text-red-600' : 'text-slate-800'}`}>
+                 <td colSpan={5} className="px-2 sm:px-3 py-2 text-right whitespace-nowrap">{translations.rebalance.totalLabel}{translations.rebalance.totalEnabled})</td>
+                 <td className={`px-2 sm:px-3 py-2 text-right tabular-nums whitespace-nowrap ${Math.abs(totalTargetPct + cashTargetPct - 100) > 0.01 ? 'text-red-600' : 'text-slate-800'}`}>
                    {(totalTargetPct + cashTargetPct).toFixed(2)}%
                  </td>
                  <td colSpan={3}></td>

@@ -536,10 +536,10 @@ const AccountManager: React.FC<Props> = () => {
                 {isLiabilityAccount(acc) ? `(${formatCurrency(acc.balance, acc.currency)})` : formatCurrency(acc.balance, acc.currency)}
               </p>
               {isLiabilityAccount(acc) && acc.annualInterestRate != null && (
-                <p className="text-xs text-slate-500 mt-1">{translations.accounts.annualInterestRate}: {acc.annualInterestRate}%</p>
+                <p className="text-sm text-slate-500 mt-1">{translations.accounts.annualInterestRate}: {acc.annualInterestRate}%</p>
               )}
               {isLiabilityAccount(acc) && acc.creditLimit != null && acc.creditLimit > 0 && (
-                <p className="text-xs text-slate-500 mt-0.5">{translations.accounts.creditLimit}: {formatCurrency(acc.creditLimit, acc.currency)}</p>
+                <p className="text-sm text-slate-500 mt-0.5">{translations.accounts.creditLimit}: {formatCurrency(acc.creditLimit, acc.currency)}</p>
               )}
             </div>
           </div>

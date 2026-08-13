@@ -654,7 +654,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                       <select
                         value={language}
                         onChange={e => handleLanguageChange(e.target.value as typeof language)}
-                        className="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        className="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       >
                         {LANGUAGES.map(({ code, label }) => (
                           <option key={code} value={code}>
@@ -667,7 +667,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                       <button
                         type="button"
                         onClick={handleUpgrade}
-                        className="hidden sm:flex items-center gap-1 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs font-bold rounded-full transition shadow-lg shadow-amber-500/20"
+                        className="hidden sm:flex items-center gap-1 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 text-sm font-bold rounded-full transition shadow-lg shadow-amber-500/20"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
@@ -680,7 +680,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                       <select
                         value={baseCurrency}
                         onChange={e => setBaseCurrency(e.target.value as BaseCurrency)}
-                        className="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        className="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       >
                         {BASE_CURRENCIES.map(c => (
                           <option key={c} value={c}>
@@ -689,7 +689,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                         ))}
                       </select>
                       <div className="flex items-center bg-slate-800 rounded-md px-2 py-1 border border-slate-700">
-                        <span className="text-xs text-slate-400 mr-2">{displayRate.label}</span>
+                        <span className="text-sm text-slate-400 mr-2">{displayRate.label}</span>
                         {baseCurrency === 'TWD' ? (
                           <input
                             type="number"
@@ -738,7 +738,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                     <button
                       type="button"
                       onClick={handleUpgrade}
-                      className="sm:hidden px-3 py-1 bg-amber-500 text-white text-xs font-bold rounded-full shadow"
+                      className="sm:hidden px-3 py-1 bg-amber-500 text-white text-sm font-bold rounded-full shadow"
                     >
                       {upgradeLabel}
                     </button>
@@ -839,7 +839,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                   <div className="p-6 bg-white/5 border-b border-sky-400/20 flex justify-between items-center">
                     <div>
                       <h3 className="text-white font-bold text-lg">TradeView</h3>
-                      <p className="text-sky-200/80 text-xs mt-1">{currentUser}</p>
+                      <p className="text-sky-200/80 text-sm mt-1">{currentUser}</p>
                     </div>
                     <button
                       type="button"
@@ -851,7 +851,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                     </button>
                   </div>
                   <div className="p-4 bg-black/20 border-b border-sky-400/15 space-y-2">
-                    <div className="flex justify-between items-center text-xs font-bold gap-2">
+                    <div className="flex justify-between items-center text-sm font-bold gap-2">
                       <span className="text-slate-500">{t(language).common.baseCurrency}</span>
                       <select
                         value={baseCurrency}
@@ -865,7 +865,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                         ))}
                       </select>
                     </div>
-                    <div className="flex justify-between items-center text-xs font-bold">
+                    <div className="flex justify-between items-center text-sm font-bold">
                       <span className="text-slate-500">
                         {displayRate.label} {t(language).labels.exchangeRate}
                       </span>

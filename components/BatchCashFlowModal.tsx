@@ -373,7 +373,7 @@ const BatchCashFlowModal: React.FC<Props> = ({ onImport, onClose }) => {
                   </span>
                 </h3>
                 <div className="border rounded-lg overflow-hidden max-h-80 overflow-y-auto">
-                  <table className="min-w-full text-xs sm:text-sm text-left">
+                  <table className="min-w-full text-sm text-left">
                     <thead className="bg-slate-100 sticky top-0">
                       <tr>
                         <th className="px-3 py-2">{text.colDate}</th>

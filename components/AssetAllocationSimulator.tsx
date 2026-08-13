@@ -417,7 +417,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
         <p className="text-sm text-blue-800 mb-2">
           {translations.simulator.description}
         </p>
-        <p className="text-xs text-blue-700 mt-2">
+        <p className="text-sm text-blue-700 mt-2">
           {translations.simulator.descriptionWarning}
         </p>
       </div>
@@ -575,7 +575,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                 step="1000"
                 placeholder="0"
               />
-              <p className="text-xs text-slate-500 mt-1">{translations.simulator.setToZero}</p>
+              <p className="text-sm text-slate-500 mt-1">{translations.simulator.setToZero}</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -594,7 +594,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
             </div>
             <div className="flex items-end">
               <div className="w-full p-3 bg-slate-50 rounded-lg">
-                <p className="text-xs text-slate-600 mb-1">{translations.simulator.annualTotal}</p>
+                <p className="text-sm text-slate-600 mb-1">{translations.simulator.annualTotal}</p>
                 <p className="text-lg font-bold text-slate-800">
                   {regularInvestment > 0 
                     ? formatCurrency(
@@ -647,7 +647,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
         </div>
         
         {/* 年化報酬率說明 */}
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800">
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
           <p className="font-semibold mb-1">{translations.simulator.cagrExplanation}</p>
           <p className="mb-1">
             {translations.simulator.cagrFormulaDesc}
@@ -665,7 +665,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
 
         {/* 多行輸入表格 */}
         <div className="overflow-x-auto -mx-1 px-1">
-          <table className={`w-full ${SIM_MANUAL_TABLE_MIN} text-xs sm:text-sm border-collapse`}>
+          <table className={`w-full ${SIM_MANUAL_TABLE_MIN} text-sm border-collapse`}>
             <thead className="bg-slate-50 text-slate-600 uppercase font-medium">
               <tr className="border-b border-slate-100">
                 <th className={`px-2 sm:px-3 py-2 text-left ${SIM_COL_TICKER}`}>{translations.simulator.ticker}</th>
@@ -729,7 +729,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
                         <button
                           onClick={() => fetchReturnForRow(row.id)}
                           disabled={row.loadingReturn || loadingTickers.has(row.ticker.trim().toUpperCase())}
-                          className="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded hover:bg-blue-100 active:bg-blue-200 active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                          className="px-2 py-1 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100 active:bg-blue-200 active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                           title={translations.simulator.autoQueryTitle}
                         >
                           {(row.loadingReturn || loadingTickers.has(row.ticker.trim().toUpperCase())) ? (
@@ -839,7 +839,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
             </div>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full text-xs sm:text-sm border-collapse">
+            <table className="min-w-full text-sm border-collapse">
               <thead className="bg-slate-50 text-slate-600 uppercase font-medium">
                 <tr className="border-b border-slate-100">
                   <th className="px-3 py-2 text-left">{translations.simulator.ticker}</th>
@@ -1069,7 +1069,7 @@ const AssetAllocationSimulator: React.FC<Props> = () => {
               <h3 className="font-bold text-slate-800 text-lg">{translations.simulator.detailedYearlyProjection}</h3>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full text-xs sm:text-sm text-left">
+              <table className="min-w-full text-sm text-left">
                 <thead className="bg-slate-50 text-slate-500 uppercase font-medium">
                   <tr>
                     <th className="px-6 py-3">{translations.simulator.year}</th>

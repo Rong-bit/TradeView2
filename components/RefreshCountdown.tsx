@@ -60,7 +60,7 @@ const RefreshCountdown: React.FC<RefreshCountdownProps> = ({
       onClick={handleClick}
       disabled={isRefreshing}
       title={isChinese ? `自動刷新倒數 ${countdownStr}，點擊立即更新` : `Auto refresh in ${countdownStr}, click to update now`}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium
         bg-indigo-50 text-indigo-700 border border-indigo-200
         hover:bg-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
     >

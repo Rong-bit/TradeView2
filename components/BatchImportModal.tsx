@@ -1028,7 +1028,7 @@ const BatchImportModal: React.FC<Props> = ({ onImport, onClose }) => {
               <div className="mb-2 flex items-center gap-2">
                 <button
                   onClick={toggleSelectAll}
-                  className="text-xs px-3 py-1 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 transition"
+                  className="text-sm px-3 py-1 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 transition"
                 >
                   {selectedIds.size === previewData.length ? tr.deselectAll : tr.selectAll}
                 </button>

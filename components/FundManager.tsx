@@ -99,6 +99,8 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
   const [safetySpreadDraft, setSafetySpreadDraft] = useState(() => String(minDebtSafetySpread));
   const [showRecurringPanel, setShowRecurringPanel] = useState(false);
   const [showDebtAlertPanel, setShowDebtAlertPanel] = useState(false);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [showScheduleSection, setShowScheduleSection] = useState(false);
 
   const schedulePanelToggleClass = (open: boolean) =>
     open
@@ -556,35 +558,81 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
     setFilterDateTo('');
   };
 
+  const hasActiveFilters = Boolean(filterAccount || filterType || filterDateFrom || filterDateTo);
+  const fundsTr = t(language).funds;
+  const renderShowRecordsLabel = () =>
+    translate('funds.showRecords', language, { count: filteredFlows.length }).split('{count}').map((part, index, array) =>
+      index === array.length - 1 ? part : (
+        <React.Fragment key={index}>
+          {part}
+          <span className="font-semibold text-slate-800">{filteredFlows.length}</span>
+        </React.Fragment>
+      )
+    );
+
   return (
     <div className="space-y-6">
       
       {/* 1. Operation Options Bar */}
       <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <h3 className="text-base sm:text-lg font-bold text-slate-700">{t(language).funds.operations}</h3>
+            <h3 className="text-base sm:text-lg font-bold text-slate-700">{fundsTr.operations}</h3>
             <div className="flex flex-wrap gap-2">
+               {/* 順序與交易紀錄互應：查詢 → 頁面專屬 → 批次匯入 → 清除 → 記一筆 */}
+               <button
+                 type="button"
+                 onClick={() => setShowFilterPanel(v => !v)}
+                 aria-expanded={showFilterPanel}
+                 className={`px-3 py-1.5 rounded text-sm whitespace-nowrap border transition ${
+                   showFilterPanel || hasActiveFilters
+                     ? 'bg-sky-600 text-white border-sky-600 hover:bg-sky-700'
+                     : 'bg-sky-50 text-sky-700 border-sky-200 hover:bg-sky-100'
+                 }`}
+               >
+                  {fundsTr.filter}
+               </button>
+               <button
+                 type="button"
+                 onClick={() => {
+                   setShowScheduleSection(v => {
+                     const next = !v;
+                     if (next && !showRecurringPanel && !showDebtAlertPanel) {
+                       setShowRecurringPanel(true);
+                     }
+                     return next;
+                   });
+                 }}
+                 aria-expanded={showScheduleSection}
+                 className={`px-3 py-1.5 rounded text-sm whitespace-nowrap border transition ${
+                   showScheduleSection || recurringDepositRules.length > 0
+                     ? 'bg-violet-600 text-white border-violet-600 hover:bg-violet-700'
+                     : 'bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100'
+                 }`}
+               >
+                  {ff.recurringSectionTitle}
+               </button>
+               <button onClick={() => setIsBatchOpen(true)} className="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded text-sm hover:bg-indigo-100 border border-indigo-200 whitespace-nowrap">
+                  {fundsTr.batchImport}
+               </button>
                <button
                  onClick={() => setIsClearConfirmOpen(true)}
                  disabled={filteredFlows.length === 0}
-                 className="bg-red-50 text-red-600 px-3 py-1.5 rounded text-xs sm:text-sm hover:bg-red-100 border border-red-200 whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-50"
+                 className="bg-red-50 text-red-600 px-3 py-1.5 rounded text-sm hover:bg-red-100 border border-red-200 whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-red-50"
                >
-                  {t(language).funds.clearAll}
-               </button>
-               <button onClick={() => setIsBatchOpen(true)} className="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded text-xs sm:text-sm hover:bg-indigo-100 border border-indigo-200 whitespace-nowrap">
-                  {t(language).funds.batchImport}
+                  {fundsTr.clearAll}
                </button>
                <button onClick={() => {
                  setEditingCashFlow(null);
                  setIsFormOpen(true);
-               }} className="app-primary-btn px-4 py-2 rounded text-xs sm:text-sm whitespace-nowrap">
-                  {t(language).funds.addRecord}
+               }} className="app-primary-btn px-4 py-2 rounded text-sm whitespace-nowrap">
+                  {fundsTr.addRecord}
                </button>
             </div>
           </div>
       </div>
 
-      {/* 1b. 定期規程與負債警示 */}
+      {/* 1b. 定期規程與負債警示：僅在操作選項按標題按鈕時顯示 */}
+      {showScheduleSection && (
       <div className="app-section-card p-4 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <h3 className="text-base sm:text-lg font-bold text-slate-700">{ff.recurringSectionTitle}</h3>
@@ -592,7 +640,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
             <button
               type="button"
               onClick={() => setShowRecurringPanel(v => !v)}
-              className={`px-3 py-1.5 rounded text-xs sm:text-sm font-medium border transition whitespace-nowrap ${schedulePanelToggleClass(showRecurringPanel)}`}
+              className={`px-3 py-1.5 rounded text-sm font-medium border transition whitespace-nowrap ${schedulePanelToggleClass(showRecurringPanel)}`}
             >
               {showRecurringPanel ? ff.toggleHideRecurring : ff.toggleShowRecurring}
             </button>
@@ -600,7 +648,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
               <button
                 type="button"
                 onClick={() => setShowDebtAlertPanel(v => !v)}
-                className={`px-3 py-1.5 rounded text-xs sm:text-sm font-medium border transition whitespace-nowrap ${schedulePanelToggleClass(showDebtAlertPanel)}`}
+                className={`px-3 py-1.5 rounded text-sm font-medium border transition whitespace-nowrap ${schedulePanelToggleClass(showDebtAlertPanel)}`}
               >
                 {showDebtAlertPanel ? ff.toggleHideDebtAlert : ff.toggleShowDebtAlert}
               </button>
@@ -619,7 +667,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
               type="button"
               onClick={() => openRecModal()}
               disabled={accounts.length === 0}
-              className="shrink-0 bg-indigo-600 text-white px-3 py-1.5 rounded text-xs sm:text-sm hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="shrink-0 bg-indigo-600 text-white px-3 py-1.5 rounded text-sm hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {ff.recurringAddRule}
             </button>
@@ -731,6 +779,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
           </div>
         )}
       </div>
+      )}
 
       {recModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 sm:p-4 z-[55] animate-fade-in">
@@ -922,15 +971,16 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
         </div>
       )}
 
-      {/* 2. Filters */}
+      {/* 2. Filters：僅在操作選項按「查詢/篩選」時顯示 */}
+      {showFilterPanel && (
       <div className="app-section-card p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-slate-800">{t(language).funds.filter}</h3>
+            <h3 className="text-lg font-semibold text-slate-800">{fundsTr.filter}</h3>
             <button 
               onClick={clearFilters}
               className="text-sm text-slate-500 hover:text-slate-700 underline"
             >
-              {t(language).funds.clearFilters}
+              {fundsTr.clearFilters}
             </button>
           </div>
           
@@ -938,14 +988,14 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
              {/* 帳戶篩選 */}
              <div>
                <label className="block text-sm font-medium text-slate-700 mb-2">
-                 {t(language).funds.accountFilter}
+                 {fundsTr.accountFilter}
                </label>
                <select 
                   value={filterAccount} 
                   onChange={e => setFilterAccount(e.target.value)} 
                   className={`w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-sm ${FORM_FIELD_THEME}`}
                >
-                  <option value="">{t(language).funds.allAccounts}</option>
+                  <option value="">{fundsTr.allAccounts}</option>
                   {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                </select>
              </div>
@@ -953,26 +1003,26 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
              {/* 類別篩選 */}
              <div>
                <label className="block text-sm font-medium text-slate-700 mb-2">
-                 {t(language).funds.typeFilter}
+                 {fundsTr.typeFilter}
                </label>
                <select 
                   value={filterType} 
                   onChange={e => setFilterType(e.target.value)} 
                   className={`w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-sm ${FORM_FIELD_THEME}`}
                >
-                  <option value="">{t(language).funds.allTypes}</option>
-                  <option value={CashFlowType.DEPOSIT}>{t(language).funds.deposit}</option>
-                  <option value={CashFlowType.WITHDRAW}>{t(language).funds.withdraw}</option>
-                  <option value={CashFlowType.TRANSFER}>{t(language).funds.transfer}</option>
-                  <option value={CashFlowType.INTEREST}>{t(language).funds.interest}</option>
-                  <option value={CashFlowType.LOAN_INTEREST}>{t(language).funds.loanInterest}</option>
+                  <option value="">{fundsTr.allTypes}</option>
+                  <option value={CashFlowType.DEPOSIT}>{fundsTr.deposit}</option>
+                  <option value={CashFlowType.WITHDRAW}>{fundsTr.withdraw}</option>
+                  <option value={CashFlowType.TRANSFER}>{fundsTr.transfer}</option>
+                  <option value={CashFlowType.INTEREST}>{fundsTr.interest}</option>
+                  <option value={CashFlowType.LOAN_INTEREST}>{fundsTr.loanInterest}</option>
                </select>
              </div>
 
              {/* 起始日 */}
              <div>
                <label className="block text-sm font-medium text-slate-700 mb-2">
-                 {t(language).funds.dateFrom}
+                 {fundsTr.dateFrom}
                </label>
                <input 
                   type="date" 
@@ -985,7 +1035,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
              {/* 結束日 */}
              <div>
                <label className="block text-sm font-medium text-slate-700 mb-2">
-                 {t(language).funds.dateTo}
+                 {fundsTr.dateTo}
                </label>
                <input 
                   type="date" 
@@ -999,14 +1049,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
           {/* 篩選結果統計與快速按鈕 */}
           <div className="flex items-center justify-between pt-4 border-t border-slate-200">
             <div className="text-sm text-slate-600">
-              {translate('funds.showRecords', language, { count: filteredFlows.length }).split('{count}').map((part, index, array) => 
-                index === array.length - 1 ? part : (
-                  <React.Fragment key={index}>
-                    {part}
-                    <span className="font-semibold text-slate-800">{filteredFlows.length}</span>
-                  </React.Fragment>
-                )
-              )}
+              {renderShowRecordsLabel()}
               {filteredFlows.length !== cashFlows.length && (
                 <span className="text-slate-500">
                   {' '}{translate('funds.totalRecords', language, { total: cashFlows.length })}
@@ -1022,9 +1065,9 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
                   setFilterDateFrom(thirtyDaysAgo.toISOString().split('T')[0]);
                   setFilterDateTo(new Date().toISOString().split('T')[0]);
                 }}
-                className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition"
+                className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition"
               >
-                {t(language).funds.last30Days}
+                {fundsTr.last30Days}
               </button>
               <button
                 onClick={() => {
@@ -1032,18 +1075,39 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
                   setFilterDateFrom(`${currentYear}-01-01`);
                   setFilterDateTo(`${currentYear}-12-31`);
                 }}
-                className="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition"
+                className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition"
               >
-                {t(language).funds.thisYear}
+                {fundsTr.thisYear}
               </button>
             </div>
           </div>
       </div>
+      )}
+
+      {!showFilterPanel && (
+        <div className="text-sm text-slate-600 px-1">
+          {renderShowRecordsLabel()}
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={() => setShowFilterPanel(true)}
+              className="ml-2 text-sky-700 hover:underline"
+            >
+              {fundsTr.filter}
+            </button>
+          )}
+          {filteredFlows.length !== cashFlows.length && (
+            <span className="text-slate-500">
+              {' '}{translate('funds.totalRecords', language, { total: cashFlows.length })}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* 3. List Table：捲動放內層，避免 app-section-card 的 overflow:hidden 蓋掉滾輪 */}
       <div className="app-section-card">
         <div className="overflow-x-auto">
-        <table className="min-w-full text-sm sm:text-base text-left">
+        <table className="min-w-full text-sm text-left">
           <thead className="bg-slate-50 text-slate-500 uppercase border-b border-slate-100 dark:border-slate-700">
             <tr>
               <th className="px-2 sm:px-3 py-2 whitespace-nowrap">{t(language).labels.date}</th>
@@ -1163,7 +1227,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
                          {formatCurrency(toBase(displayTotalTWD), baseCurrency)}
                        </td>
 
-                       <td className="px-2 sm:px-3 py-2 text-slate-700 dark:text-slate-100 whitespace-nowrap text-xs sm:text-sm">
+                       <td className="px-2 sm:px-3 py-2 text-slate-700 dark:text-slate-100 whitespace-nowrap">
                          <div className="flex flex-col">
                            <span>{accountName}</span>
                            {cf.type === CashFlowType.TRANSFER && targetName && <span className="text-slate-400 dark:text-slate-500 text-xs">→ {targetName}</span>}
@@ -1172,7 +1236,7 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
 
                        <td className="px-2 sm:px-3 py-2 text-slate-600 dark:text-slate-300 hidden sm:table-cell">
                          <div className="flex flex-col gap-1">
-                           <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold ${typeBadgeClass}`}>
+                           <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-bold ${typeBadgeClass}`}>
                              {typeBadgeLabel}
                            </span>
                            {cf.note && (
@@ -1197,11 +1261,11 @@ const FundManager: React.FC<Props> = ({ minDebtSafetySpread = 2, onMinDebtSafety
                                  setEditingCashFlow(cf);
                                  setIsFormOpen(true);
                                }} 
-                               className="text-blue-400 hover:text-blue-600 text-[10px] sm:text-xs border border-blue-200 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded hover:bg-blue-50 whitespace-nowrap"
+                               className="text-blue-400 hover:text-blue-600 text-sm border border-blue-200 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded hover:bg-blue-50 whitespace-nowrap"
                              >
                                {translations.common.edit}
                              </button>
-                           <button onClick={() => onDelete(cf.id)} className="text-red-400 hover:text-red-600 text-[10px] sm:text-xs border border-red-200 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded hover:bg-red-50 whitespace-nowrap">{translations.common.delete}</button>
+                           <button onClick={() => onDelete(cf.id)} className="text-red-400 hover:text-red-600 text-sm border border-red-200 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded hover:bg-red-50 whitespace-nowrap">{translations.common.delete}</button>
                          </div>
                        </td>
                      </tr>

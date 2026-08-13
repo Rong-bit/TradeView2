@@ -628,7 +628,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
             {translations.dashboard.netCost}
             <button
               onClick={() => setShowCostDetailModal(true)}
-              className="relative z-10 text-indigo-600 hover:text-indigo-800 text-xs bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100"
+              className="relative z-10 text-indigo-600 hover:text-indigo-800 text-sm bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100"
               title={translations.dashboard.viewCalculationDetails}
             >🔍 {translations.dashboard.detail}</button>
           </h4>
@@ -670,9 +670,9 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
               {formatCurrency(toBase(assetsCardHeadlineTwd), baseCurrency)}
             </p>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">{translations.dashboard.includeCash}: {formatCurrency(toBase(summary.cashBalanceTWD), baseCurrency)}</p>
+          <p className="text-sm text-slate-400 mt-0.5">{translations.dashboard.includeCash}: {formatCurrency(toBase(summary.cashBalanceTWD), baseCurrency)}</p>
           {hasDebtOnBooks && (
-            <p className="text-xs sm:text-sm text-red-600 mt-0.5">
+            <p className="text-sm text-red-600 mt-0.5">
               {translations.dashboard.totalDebt}: {formatCurrency(toBase(summary.totalDebtBalanceTWD ?? 0), baseCurrency)}
             </p>
           )}
@@ -742,7 +742,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
           )}
           {/* ① Progress bar showing return vs 8% target */}
           <div className="mt-2">
-            <div className="flex justify-between text-xs sm:text-sm text-slate-400 mb-0.5">
+            <div className="flex justify-between text-sm text-slate-400 mb-0.5">
               <span>0%</span>
               <span className="text-slate-500">{translations.dashboard.annualizedReturnTarget8}</span>
               <span>20%+</span>
@@ -759,7 +759,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
               />
             </div>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">{translations.dashboard.estimatedGrowth8}: {formatCurrency(toBase(summary.netInvestedTWD * 1.08), baseCurrency)}</p>
+          <p className="text-sm text-slate-400 mt-1">{translations.dashboard.estimatedGrowth8}: {formatCurrency(toBase(summary.netInvestedTWD * 1.08), baseCurrency)}</p>
         </div>
 
       </div>
@@ -792,7 +792,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                   </p>
                   {insight.creditLimit != null && insight.creditLimit > 0 && util != null && (
                     <div className="mt-3">
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                      <p className="text-sm text-slate-600 dark:text-slate-300">
                         {translate('dashboard.creditUsedOfLimit', language, {
                           used: formatCurrency(insight.balance, insight.currency),
                           limit: formatCurrency(insight.creditLimit, insight.currency),
@@ -809,18 +809,18 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                   )}
                   {insight.estimatedMonthlyInterest != null && (
                     <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-600">
-                      <p className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                      <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                         {translations.dashboard.estimatedMonthlyInterest}
                       </p>
                       <p className="text-lg font-bold text-slate-800 dark:text-slate-100 mt-0.5 tabular-nums">
                         {formatCurrency(insight.estimatedMonthlyInterest, insight.currency)}
                         {insight.annualInterestRate != null && (
-                          <span className="text-xs sm:text-sm font-normal text-slate-500 ml-1">
+                          <span className="text-sm font-normal text-slate-500 ml-1">
                             @ {insight.annualInterestRate}%
                           </span>
                         )}
                       </p>
-                      <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                      <p className="text-sm text-slate-400 mt-0.5">
                         {translations.dashboard.estimatedMonthlyInterestNote}
                       </p>
                     </div>
@@ -891,7 +891,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
             {baseCurrency === 'TWD' && (
             <div className="col-span-2 md:col-span-4 mt-3 pt-5 border-t-2 border-slate-400 dark:border-slate-400">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300">
+                <p className="text-sm font-bold text-slate-600 dark:text-slate-300">
                   海外所得稅務進度（{overseasTaxProgress.reportYear}）
                 </p>
                 <span className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-700 font-medium w-fit">
@@ -908,7 +908,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                   <div className="absolute inset-y-0 border-l border-slate-400/70" style={{ left: `${(1_000_000 / 6_700_000) * 100}%` }} />
                   <div className="absolute inset-y-0 border-l border-slate-500" style={{ left: '100%' }} />
                 </div>
-                <div className="relative mt-1 h-4 text-xs sm:text-sm text-slate-500">
+                <div className="relative mt-1 h-4 text-sm text-slate-500">
                   <span className="absolute left-0 top-0">0</span>
                   <span
                     className="absolute top-0 -translate-x-1/2"
@@ -921,25 +921,25 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                 <div className="rounded-lg bg-slate-50 p-3">
-                  <p className="text-slate-500 text-xs sm:text-sm">海外已實現損益（非台灣市場）</p>
+                  <p className="text-slate-500 text-sm">海外已實現損益（非台灣市場）</p>
                   <p className="font-bold text-slate-800 tabular-nums">
                     {formatCurrency(toBase(overseasTaxProgress.overseasRealizedPLTwd), baseCurrency)}
                   </p>
                 </div>
                 <div className="rounded-lg bg-slate-50 p-3">
-                  <p className="text-slate-500 text-xs sm:text-sm">海外累積股利（非台灣市場）</p>
+                  <p className="text-slate-500 text-sm">海外累積股利（非台灣市場）</p>
                   <p className="font-bold text-slate-800 tabular-nums">
                     {formatCurrency(toBase(overseasTaxProgress.overseasDividendTwd), baseCurrency)}
                   </p>
                 </div>
                 <div className="rounded-lg bg-blue-50 p-3">
-                  <p className="text-slate-600 text-xs sm:text-sm">海外所得合計（損益 + 股利）</p>
+                  <p className="text-slate-600 text-sm">海外所得合計（損益 + 股利）</p>
                   <p className="font-bold text-blue-700 tabular-nums">
                     {formatCurrency(toBase(overseasTaxProgress.overseasIncomeTwd), baseCurrency)}
                   </p>
                 </div>
                 <div className="rounded-lg bg-rose-50 p-3">
-                  <p className="text-slate-600 text-xs sm:text-sm">最低稅負試算（參考）</p>
+                  <p className="text-slate-600 text-sm">最低稅負試算（參考）</p>
                   <p className="font-bold text-rose-700 tabular-nums">
                     {formatCurrency(toBase(overseasTaxProgress.estimatedAmtTaxTwd), baseCurrency)}
                   </p>
@@ -1007,7 +1007,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
           <div className="w-full">
             {mainChartTab === 'cumulative' ? (
               <>
-                <div className="max-sm:px-3 mb-3 flex flex-wrap gap-3 text-xs sm:text-sm">
+                <div className="max-sm:px-3 mb-3 flex flex-wrap gap-3 text-sm">
                   {[
                     { key: 'cost', label: translations.dashboard.chartLabels.investmentCost, color: '#8b5cf6' },
                     { key: 'profit', label: translations.dashboard.chartLabels.barName, color: '#10b981' },
@@ -1051,7 +1051,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           axisLine={{ stroke: isDarkMode ? '#64748b' : '#94a3b8' }}
                           tickLine={{ stroke: isDarkMode ? '#64748b' : '#94a3b8' }}
                           fontSize={cumulativeXAxisFontSize}
-                          className="text-xs sm:text-sm"
+                          className="text-sm"
                           padding={isTrendChartCompact ? { left: 0, right: 0 } : { left: 10, right: 10 }}
                           angle={-45}
                           textAnchor="end"
@@ -1064,7 +1064,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           tick={{ fill: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: 9 }}
                           axisLine={{ stroke: isDarkMode ? '#64748b' : '#94a3b8' }}
                           tickLine={{ stroke: isDarkMode ? '#64748b' : '#94a3b8' }}
-                          className="text-xs sm:text-sm"
+                          className="text-sm"
                           width={cumulativeLeftAxisWidth}
                           tickFormatter={(val: number) => {
                             if (Math.abs(val) >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
@@ -1457,7 +1457,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
             </div>
             <div className="flex-1 w-full space-y-3">
               <div>
-                <p className="text-xs sm:text-sm font-semibold text-slate-500 mb-1">{translations.dashboard.legendMarketOuter} ({translations.dashboard.includeCash})</p>
+                <p className="text-sm font-semibold text-slate-500 mb-1">{translations.dashboard.legendMarketOuter} ({translations.dashboard.includeCash})</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                   {allocationIncludingCash.outer.map((item, index) => (
                     <div
@@ -1479,7 +1479,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                 </div>
               </div>
               <div>
-                <p className="text-xs sm:text-sm font-semibold text-slate-500 mb-1">{translations.dashboard.legendStockBondInner} ({translations.dashboard.includeCash})</p>
+                <p className="text-sm font-semibold text-slate-500 mb-1">{translations.dashboard.legendStockBondInner} ({translations.dashboard.includeCash})</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                   {allocationIncludingCash.inner.map((item, index) => (
                     <div
@@ -1596,8 +1596,8 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                                 className="px-2 py-1 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 hover:border-indigo-200 dark:hover:border-indigo-500 transition flex items-center gap-2"
                                 title={translations.dashboard.removeOverrideTitle}
                               >
-                                <span className="text-xs font-mono text-slate-700 dark:text-slate-200">{tickerKey}</span>
-                                <span className={`text-xs font-semibold ${assetClass === AssetClass.BOND ? 'text-blue-700 dark:text-blue-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
+                                <span className="text-sm font-mono text-slate-700 dark:text-slate-200">{tickerKey}</span>
+                                <span className={`text-sm font-semibold ${assetClass === AssetClass.BOND ? 'text-blue-700 dark:text-blue-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
                                   {label}
                                 </span>
                                 <span className="text-xs sm:text-sm text-slate-400">×</span>

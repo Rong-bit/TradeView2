@@ -369,7 +369,7 @@ const HoldingsTable: React.FC<Props> = () => {
           {h.ticker}
         </td>
 
-        <td className={`${NUM_CELL} font-mono transition-colors text-slate-600 dark:text-slate-100 text-xs sm:text-sm`}>
+        <td className={`${NUM_CELL} font-mono transition-colors text-slate-600 dark:text-slate-100`}>
           {(() => {
             const num = h.quantity;
             if (num % 1 === 0) {
@@ -380,14 +380,14 @@ const HoldingsTable: React.FC<Props> = () => {
           })()}
         </td>
 
-        <td className={`${NUM_CELL} font-mono text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100`}>
+        <td className={`${NUM_CELL} font-mono font-semibold text-slate-800 dark:text-slate-100`}>
           {formatHoldingPrice(displayCurrentPrice, currency)}
         </td>
 
         <td className={`${CELL_PAD} whitespace-nowrap`}>
           <div className="flex flex-col gap-1 min-w-[3.5rem]">
             <span
-              className={`text-xs font-medium text-right ${
+              className={`text-sm font-medium text-right ${
                 isDarkMode ? 'text-[#94a3b8]' : 'text-[#475569] group-hover:text-[#1e293b]'
               }`}
             >
@@ -426,7 +426,7 @@ const HoldingsTable: React.FC<Props> = () => {
         <td className={`${NUM_CELL} font-bold ${plColor}`}>
           <div className="flex flex-col items-end leading-tight">
             <span>{formatCurrency(h.unrealizedPL, currency)}</span>
-            <span className="text-[10px] opacity-80">{isProfit ? '+' : ''}{h.unrealizedPLPercent.toFixed(2)}%</span>
+            <span className="text-sm opacity-80">{isProfit ? '+' : ''}{h.unrealizedPLPercent.toFixed(2)}%</span>
           </div>
         </td>
 
@@ -434,7 +434,7 @@ const HoldingsTable: React.FC<Props> = () => {
           {h.annualizedReturn && h.annualizedReturn !== 0 ? `${h.annualizedReturn.toFixed(1)}%` : '-'}
         </td>
 
-        <td className={`${NUM_CELL} text-xs font-bold ${dailyChangeColor}`}>
+        <td className={`${NUM_CELL} font-bold ${dailyChangeColor}`}>
           {h.dailyChange !== undefined && h.dailyChange !== null ? (
              <div className="flex flex-col items-end">
                <span>{h.dailyChange > 0 ? '+' : ''}{h.dailyChange.toFixed(2)}</span>
@@ -447,7 +447,7 @@ const HoldingsTable: React.FC<Props> = () => {
           )}
         </td>
 
-        <td className={`${NUM_CELL} text-xs text-slate-600 dark:text-slate-100`}>
+        <td className={`${NUM_CELL} text-slate-600 dark:text-slate-100`}>
            {new Intl.NumberFormat('zh-TW', {
               style: 'currency',
               currency: currency,
@@ -555,7 +555,7 @@ const HoldingsTable: React.FC<Props> = () => {
           <div className="flex items-center gap-1 bg-white dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600 p-1">
             <button
               onClick={() => handleDisplayModeChange('merged')}
-              className={`px-3 py-1.5 rounded text-xs font-medium transition ${
+              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
                 displayMode === 'merged'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-slate-50'
@@ -565,7 +565,7 @@ const HoldingsTable: React.FC<Props> = () => {
             </button>
             <button
               onClick={() => handleDisplayModeChange('detailed')}
-              className={`px-3 py-1.5 rounded text-xs font-medium transition ${
+              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
                 displayMode === 'detailed'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-slate-50'

@@ -105,7 +105,7 @@ const MarketPerformanceChart: React.FC = () => {
           <h3 className="font-bold text-slate-800 text-xl">{tr.marketChart.title}</h3>
           <p className="text-sm text-slate-500 mt-0.5 leading-relaxed">{tr.marketChart.subtitle}</p>
         </div>
-        <div className="flex w-full sm:w-auto shrink-0 rounded-lg border border-slate-200 overflow-hidden text-xs sm:text-sm font-medium">
+        <div className="flex w-full sm:w-auto shrink-0 rounded-lg border border-slate-200 overflow-hidden text-sm font-medium">
           {(['cumulativeReturn', 'weight', 'value'] as Metric[]).map(m => (
             <button
               key={m}
@@ -165,7 +165,7 @@ const MarketPerformanceChart: React.FC = () => {
                 </span>
               )}
               <div className="min-w-0">
-                <div className="text-xs font-bold text-slate-700">{d.market}</div>
+                <div className="text-sm font-bold text-slate-700">{d.market}</div>
                 {metric === 'cumulativeReturn' && (
                   <>
                     <div className={`text-sm font-bold tabular-nums ${retColor}`}>{retStr}</div>

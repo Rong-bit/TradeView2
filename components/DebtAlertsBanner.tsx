@@ -57,14 +57,14 @@ const DebtAlertsBanner: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => onAcknowledgePayment(a.ruleId)}
-              className="px-3 py-1 rounded bg-amber-700 text-white text-xs hover:bg-amber-800"
+              className="px-3 py-1 rounded bg-amber-700 text-white text-sm hover:bg-amber-800"
             >
               {tr('acknowledgePaid')}
             </button>
             <button
               type="button"
               onClick={onDismissSession}
-              className="px-3 py-1 rounded border border-amber-400 text-amber-800 dark:text-amber-200 text-xs"
+              className="px-3 py-1 rounded border border-amber-400 text-amber-800 dark:text-amber-200 text-sm"
             >
               {tr('remindLater')}
             </button>

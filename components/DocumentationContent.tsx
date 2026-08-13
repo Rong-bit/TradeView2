@@ -32,25 +32,25 @@ const DocumentationContent: React.FC<Props> = ({ content }) => {
   const lines = content.split('\n');
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1 text-sm">
       {lines.map((line, i) => {
         if (line.startsWith('### ')) {
           return (
-            <h4 key={i} className="text-base font-bold text-slate-800 mt-4 mb-1">
+            <h4 key={i} className="text-sm font-bold text-slate-800 mt-4 mb-1">
               {renderInlineMarkdown(line.slice(4))}
             </h4>
           );
         }
         if (line.startsWith('## ')) {
           return (
-            <h3 key={i} className="text-lg font-bold text-slate-800 mt-5 mb-2">
+            <h3 key={i} className="text-base font-bold text-slate-800 mt-5 mb-2">
               {renderInlineMarkdown(line.slice(3))}
             </h3>
           );
         }
         if (line.startsWith('# ')) {
           return (
-            <h2 key={i} className="text-xl font-bold text-slate-800 mt-2 mb-3">
+            <h2 key={i} className="text-lg font-bold text-slate-800 mt-2 mb-3">
               {renderInlineMarkdown(line.slice(2))}
             </h2>
           );
@@ -59,7 +59,7 @@ const DocumentationContent: React.FC<Props> = ({ content }) => {
           return (
             <blockquote
               key={i}
-              className="my-2 border-0 border-none pl-0 ml-0 text-slate-600"
+              className="my-2 border-0 border-none pl-0 ml-0 text-sm text-slate-600"
               style={{ border: 'none', marginInline: 0, paddingInline: 0 }}
             >
               {renderInlineMarkdown(line.slice(2))}
@@ -68,7 +68,7 @@ const DocumentationContent: React.FC<Props> = ({ content }) => {
         }
         if (/^[*-] /.test(line)) {
           return (
-            <div key={i} className="flex gap-2 ml-2">
+            <div key={i} className="flex gap-2 ml-2 text-sm">
               <span className="text-slate-400 shrink-0">•</span>
               <span>{renderInlineMarkdown(line.slice(2))}</span>
             </div>
@@ -78,7 +78,7 @@ const DocumentationContent: React.FC<Props> = ({ content }) => {
           return <div key={i} className="h-2" aria-hidden />;
         }
         return (
-          <p key={i} className="leading-relaxed">
+          <p key={i} className="text-sm leading-relaxed">
             {renderInlineMarkdown(line)}
           </p>
         );

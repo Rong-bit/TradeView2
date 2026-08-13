@@ -575,9 +575,9 @@ const HoldingsTable: React.FC<Props> = () => {
             <col style={{ width: '12.1%' }} />
             <col style={{ width: '12.1%' }} />
             <col style={{ width: '12.1%' }} />
-            <col style={{ width: '5.24%' }} />
+            <col style={{ width: '7.24%' }} />
             <col style={{ width: '9.27%' }} />
-            <col style={{ width: '10.09%' }} />
+            <col style={{ width: '8.09%' }} />
           </colgroup>
           {/* 凍結標題列：垂直／水平捲動時表頭固定 */}
           <thead className="text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider">

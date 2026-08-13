@@ -471,22 +471,26 @@ const HoldingsTable: React.FC<Props> = () => {
                 style={{ width: MARKET_TICKER_WIDTH_PCT }}
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-3.5 w-3.5 shrink-0 opacity-90 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-md bg-white/10 hover:bg-white/20 transition"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleAccountExpanded(account.id);
+                    }}
+                    aria-expanded={isExpanded}
+                    aria-label={isExpanded ? 'Collapse' : 'Expand'}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                  </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                  </button>
                   <span className="truncate">{account.name}</span>
                   <span className="text-xs font-normal opacity-75 shrink-0">({account.currency})</span>
                   <span className="text-[10px] font-normal opacity-70 shrink-0">· {accountHoldings.length}</span>
+                  <span className={`ml-auto text-[10px] font-normal opacity-80 shrink-0 ${isExpanded ? '' : 'opacity-60'}`}>
+                    {isExpanded ? '▾' : '▸'}
+                  </span>
                 </div>
               </td>
               <td className={`${CELL_PAD} text-right`}>-</td>

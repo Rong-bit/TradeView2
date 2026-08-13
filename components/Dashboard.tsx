@@ -1753,15 +1753,15 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm text-left">
-            <thead className="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 text-sm uppercase font-bold tracking-wider border-b border-slate-100 dark:border-slate-700">
+          <table className="w-full table-auto text-sm text-left">
+            <thead className="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 text-sm font-bold border-b border-slate-100 dark:border-slate-700">
               <tr>
-                <th className="px-3 py-2 sticky left-0 z-10 min-w-[10rem] bg-white dark:bg-slate-800">
+                <th className="px-3 py-2 sticky left-0 z-10 min-w-[10rem] whitespace-nowrap bg-white dark:bg-slate-800">
                   {translations.dashboard.accountName}
                 </th>
-                <th className="px-3 py-2 text-right">{translations.dashboard.totalAssetsNT}</th>
-                <th className="px-3 py-2 text-right">{translations.dashboard.marketValueNT}</th>
-                <th className="px-3 py-2 text-right min-w-[5.5rem]">
+                <th className="px-3 py-2 text-right whitespace-nowrap">{translations.dashboard.totalAssetsNT}</th>
+                <th className="px-3 py-2 text-right whitespace-nowrap">{translations.dashboard.marketValueNT}</th>
+                <th className="px-3 py-2 text-right whitespace-nowrap">
                   <span className="inline-flex items-center justify-end gap-1">
                     {translations.dashboard.balanceNT}
                     <span
@@ -1772,10 +1772,10 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                     </span>
                   </span>
                 </th>
-                <th className="px-3 py-2 text-right">{translations.dashboard.unrealizedPL}</th>
-                <th className="px-3 py-2 text-right">{translations.dashboard.realizedPL}</th>
-                <th className="px-3 py-2 text-right">{translations.dashboard.dividendInterest}</th>
-                <th className="px-3 py-2 text-right">
+                <th className="px-3 py-2 text-right whitespace-nowrap">{translations.dashboard.unrealizedPL}</th>
+                <th className="px-3 py-2 text-right whitespace-nowrap">{translations.dashboard.realizedPL}</th>
+                <th className="px-3 py-2 text-right whitespace-nowrap">{translations.dashboard.dividendInterest}</th>
+                <th className="px-3 py-2 text-right whitespace-nowrap">
                   <span className="inline-flex items-center justify-end gap-1">
                     {translations.dashboard.profitNT}
                     <span
@@ -1786,7 +1786,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                     </span>
                   </span>
                 </th>
-                <th className="px-3 py-2 text-right">
+                <th className="px-3 py-2 text-right whitespace-nowrap">
                   <span className="inline-flex items-center justify-end gap-1">
                     {translations.dashboard.totalReturnRate}
                     <span
@@ -1855,7 +1855,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                         style={{ transition: "background-color 0.15s" }}
                       >
                         <td
-                          className="px-3 py-2 font-semibold text-sm sticky left-0 z-10 min-w-[10rem] bg-white dark:bg-slate-800"
+                          className="px-3 py-2 font-semibold text-sm sticky left-0 z-10 min-w-[10rem] whitespace-nowrap bg-white dark:bg-slate-800"
                           style={{
                             transition: "background-color 0.15s",
                             backgroundColor:
@@ -1893,36 +1893,36 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           </div>
                         </td>
                         <td
-                          className="px-3 py-2 text-right font-bold tabular-nums text-sm"
+                          className="px-3 py-2 text-right font-bold tabular-nums text-sm whitespace-nowrap"
                           style={{ color: isDarkMode ? "#e2e8f0" : "#334155" }}
                         >
                           {formatCurrency(totalAssets, displayCurrency)}
                         </td>
                         <td
-                          className="px-3 py-2 text-right tabular-nums text-sm"
+                          className="px-3 py-2 text-right tabular-nums text-sm whitespace-nowrap"
                           style={{ color: isDarkMode ? "#e2e8f0" : "#334155" }}
                         >
                           {formatCurrency(marketValue, displayCurrency)}
                         </td>
                         <td
-                          className="px-3 py-2 text-right tabular-nums text-sm min-w-[5.5rem]"
+                          className="px-3 py-2 text-right tabular-nums text-sm whitespace-nowrap"
                           style={{ color: isDarkMode ? "#e2e8f0" : "#334155" }}
                         >
                           {formatCurrency(cashBalance, displayCurrency)}
                         </td>
-                        <td className={`px-3 py-2 text-right font-bold ${unrealizedProfit >= 0 ? 'text-success' : 'text-danger'}`}>
+                        <td className={`px-3 py-2 text-right font-bold tabular-nums whitespace-nowrap ${unrealizedProfit >= 0 ? 'text-success' : 'text-danger'}`}>
                           {formatCurrency(unrealizedProfit, displayCurrency)}
                         </td>
-                        <td className={`px-3 py-2 text-right font-bold ${realizedProfit >= 0 ? 'text-success' : 'text-danger'}`}>
+                        <td className={`px-3 py-2 text-right font-bold tabular-nums whitespace-nowrap ${realizedProfit >= 0 ? 'text-success' : 'text-danger'}`}>
                           {formatCurrency(realizedProfit, displayCurrency)}
                         </td>
-                        <td className={`px-3 py-2 text-right font-bold ${income >= 0 ? 'text-success' : 'text-danger'}`}>
+                        <td className={`px-3 py-2 text-right font-bold tabular-nums whitespace-nowrap ${income >= 0 ? 'text-success' : 'text-danger'}`}>
                           {formatCurrency(income, displayCurrency)}
                         </td>
-                        <td className={`px-3 py-2 text-right font-bold ${profit >= 0 ? 'text-success' : 'text-danger'}`}>
+                        <td className={`px-3 py-2 text-right font-bold tabular-nums whitespace-nowrap ${profit >= 0 ? 'text-success' : 'text-danger'}`}>
                           {formatCurrency(profit, displayCurrency)}
                         </td>
-                        <td className={`px-3 py-2 text-right font-bold ${acc.roi >= 0 ? 'text-success' : 'text-danger'}`}>
+                        <td className={`px-3 py-2 text-right font-bold tabular-nums whitespace-nowrap ${acc.roi >= 0 ? 'text-success' : 'text-danger'}`}>
                           {acc.roi.toFixed(2)}%
                         </td>
                       </tr>

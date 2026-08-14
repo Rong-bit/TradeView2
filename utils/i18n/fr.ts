@@ -732,7 +732,7 @@ R : **App iOS/Android** : « Télécharger la sauvegarde (.json) » puis partage
 Q : Pourquoi les prix des actions ne peuvent-ils pas être mis à jour ?
 R : Vérifiez le marché ; si incorrect, « Mise à jour groupée des marchés » dans « Historique ».
 
-Q : Pourquoi les prix et taux diffèrent-ils de « IA Mettre à Jour les Prix et Taux de Change » ?
+Q : Pourquoi les prix et taux diffèrent-ils de « MAJ cours (IA) » ?
 R : Les valeurs web peuvent avoir trois à cinq minutes de retard. Ne pas les utiliser pour acheter/vendre ; référez-vous aux sociétés de bourse. Logiciel de statistique d'actifs uniquement (réserves, voyage, retraite, dépôts, actions/obligations), sans trading. Investissez prudemment et gardez des réserves d'urgence. Merci.
 
 Q : Comment sont calculés **Emprunté / plafond / utilisation** ?

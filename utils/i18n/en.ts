@@ -797,7 +797,7 @@ A: **iOS/Android app**: Tap "Download Backup (.json)" and use the system share s
 Q: Why can't stock prices be updated?
 A: Check if the stock market is set correctly. If incorrect, select "Batch Update Market" in "Transactions" to change the market.
 
-Q: Why are stock prices and exchange rates different from the current prices obtained by clicking "AI Update Prices & Exchange Rates"?
+Q: Why are stock prices and exchange rates different from the current prices obtained by clicking "Update prices"?
 A: Stock prices and exchange rates are scraped from web current values, so the current values may lag by three to five minutes. Therefore, do not use them as references for buying and selling. It is recommended to use securities companies as the main reference for buying and selling. This software is only suitable for statistical asset functions, such as emergency funds, travel funds, retirement funds, fixed deposits, stocks and bonds, etc. It does not have securities trading functions. Additionally, investments have profits and losses. Remember to reserve emergency funds. Thank you for using.
 
 Q: How are used, limit, and utilization % calculated on "Dashboard"?

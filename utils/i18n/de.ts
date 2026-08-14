@@ -704,7 +704,7 @@ A: **iOS-/Android-App**: „Backup herunterladen (.json)" und über das Teilen-M
 Q: Warum lassen sich Kurse nicht aktualisieren?
 A: Marktzuordnung prüfen; bei Fehler in „Transaktionen" **Märkte stapelweise aktualisieren** nutzen.
 
-Q: Warum weichen Kurse und Wechselkurse von „KI aktualisiert Kurse & Wechselkurse" ab?
+Q: Warum weichen Kurse und Wechselkurse von „Kurse updaten" ab?
 A: Kurse stammen aus Web-Aktualwerten und können drei bis fünf Minuten verzögert sein. Nicht als Handelsreferenz verwenden; Broker als Hauptreferenz nutzen. Diese App dient nur der Vermögensstatistik (Notfallreserve, Reisefonds, Rente, Festgeld, Aktien/Anleihen usw.) ohne Wertpapierhandel. Investitionen bergen Gewinn und Verlust — Notfallreserve einplanen. Vielen Dank.
 
 Q: Wie werden **Genutzt / Limit / Auslastung** berechnet?

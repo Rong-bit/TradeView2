@@ -731,7 +731,7 @@ R: **App iOS/Android** : « Descarregar backup (.json) » e partilhe para Fichei
 P: Por que os preços das acções não actualizam?
 R: Verifique o mercado ; se incorrecto, « Atualizar mercados em lote » em « Histórico ».
 
-P: Por que preços e taxas diferem de « AI Atualizar Preços e Taxas de Câmbio »?
+P: Por que preços e taxas diferem de « Atualizar preços »?
 R: Valores web podem atrasar três a cinco minutos. Não use para negociar ; referência principal na corretora. Software só para estatística de activos (reserva de emergência, viagem, reforma, depósitos, acções/obrigações), sem trading. Investimentos têm ganhos e perdas — reserve fundos de emergência. Obrigado.
 
 P: Como se calculam **Usado / limite / utilização**?

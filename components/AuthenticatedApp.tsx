@@ -136,6 +136,8 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
   const { top: safeAreaTop } = useSafeAreaInsets();
 
   const menuToggleRef = useRef(0);
+  /** 從選單切到交易紀錄／資金管理時，關閉選單後改捲到頂而非還原舊位置 */
+  const scrollToTopAfterMenuCloseRef = useRef(false);
 
   const handleMenuToggle = useCallback(() => {
     const now = Date.now();
@@ -144,6 +146,12 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
     menuToggleRef.current = now;
     toggleMobileMenu();
   }, [toggleMobileMenu]);
+
+  const scrollPageToTop = useCallback(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   useEffect(() => {
     if (!isMobileMenuOpen) return;
@@ -174,9 +182,23 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
       document.body.style.left = left;
       document.body.style.right = right;
       document.body.style.width = width;
-      window.scrollTo(0, scrollY);
+      const toTop = scrollToTopAfterMenuCloseRef.current;
+      scrollToTopAfterMenuCloseRef.current = false;
+      window.scrollTo(0, toTop ? 0 : scrollY);
     };
   }, [isMobileMenuOpen, setIsMobileMenuOpen]);
+
+  // 切換至交易紀錄／資金管理時，內容從最上方開始顯示
+  useEffect(() => {
+    if (view !== 'history' && view !== 'funds') return;
+    scrollPageToTop();
+    const t0 = window.setTimeout(scrollPageToTop, 0);
+    const t1 = window.setTimeout(scrollPageToTop, 50);
+    return () => {
+      window.clearTimeout(t0);
+      window.clearTimeout(t1);
+    };
+  }, [view, scrollPageToTop]);
 
   const deleteState = useDeleteState();
   const { transactionToEdit, cashFlowToDelete } = deleteState;
@@ -894,6 +916,9 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                         key={v}
                         type="button"
                         onClick={() => {
+                          if (v === 'history' || v === 'funds') {
+                            scrollToTopAfterMenuCloseRef.current = true;
+                          }
                           setView(v);
                           setIsMobileMenuOpen(false);
                         }}

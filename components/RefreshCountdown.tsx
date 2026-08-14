@@ -60,10 +60,12 @@ const RefreshCountdown: React.FC<RefreshCountdownProps> = ({
       onClick={handleClick}
       disabled={isRefreshing}
       title={isChinese ? `自動刷新倒數 ${countdownStr}，點擊立即更新` : `Auto refresh in ${countdownStr}, click to update now`}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium
+      className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium leading-tight
         bg-indigo-50 text-indigo-700 border border-indigo-200
-        hover:bg-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        hover:bg-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
+        max-w-full min-w-0"
     >
+      <span className="shrink-0">
       {isRefreshing ? (
         /* 轉圈動畫 */
         <svg className="animate-spin" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -85,9 +87,12 @@ const RefreshCountdown: React.FC<RefreshCountdownProps> = ({
           />
         </svg>
       )}
-      <span>{isRefreshing ? refreshingLabel : (label || defaultLabel)}</span>
+      </span>
+      <span className="min-w-0 whitespace-normal text-left break-words">
+        {isRefreshing ? refreshingLabel : (label || defaultLabel)}
+      </span>
       {!isRefreshing && (
-        <span className="text-indigo-400 font-mono tabular-nums">{countdownStr}</span>
+        <span className="text-indigo-400 font-mono tabular-nums shrink-0">{countdownStr}</span>
       )}
     </button>
   );

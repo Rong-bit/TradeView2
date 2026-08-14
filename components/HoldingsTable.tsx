@@ -543,19 +543,19 @@ const HoldingsTable: React.FC<Props> = () => {
       ref={cardRef}
       className="bg-white dark:bg-slate-800 rounded-xl shadow overflow-hidden border border-slate-100 dark:border-slate-700"
     >
-      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center flex-wrap gap-2 bg-slate-50 dark:bg-slate-800">
-        <h3 className="font-bold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex flex-col gap-3 bg-slate-50 dark:bg-slate-800">
+        <h3 className="font-bold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2 min-w-0">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
           </svg>
-          {translations.holdings.portfolioHoldings}
+          <span className="break-words">{translations.holdings.portfolioHoldings}</span>
         </h3>
-        <div className="flex items-center gap-2">
-          {/* 切換顯示模式按鈕 */}
-          <div className="flex items-center gap-1 bg-white dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600 p-1">
+        <div className="flex flex-wrap items-stretch gap-2 min-w-0">
+          {/* 切換顯示模式按鈕：長語系可換行，避免裁切 */}
+          <div className="flex flex-wrap items-stretch gap-1 bg-white dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600 p-1 min-w-0 max-w-full">
             <button
               onClick={() => handleDisplayModeChange('merged')}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded text-xs font-medium transition leading-tight text-left whitespace-normal ${
                 displayMode === 'merged'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-slate-50'
@@ -565,7 +565,7 @@ const HoldingsTable: React.FC<Props> = () => {
             </button>
             <button
               onClick={() => handleDisplayModeChange('detailed')}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded text-xs font-medium transition leading-tight text-left whitespace-normal ${
                 displayMode === 'detailed'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-slate-50'

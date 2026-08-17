@@ -572,28 +572,47 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
       return period;
     };
 
-    return buildQuarterlyTrendData(chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData).map(item => {
+    const rows = buildQuarterlyTrendData(
+      chartData,
+      attributionSeries,
+      cashFlows,
+      transactions,
+      portfolioAccounts,
+      rates,
+      historicalData
+    ).map(item => {
       const yearMatch = item.period.match(/^(\d{4})(?:-Q[1-4]|-NOW)$/);
       const calYear = yearMatch ? Number(yearMatch[1]) : NaN;
-      const yearRoi = Number.isFinite(calYear) ? roiByCalendarYear.get(calYear) : undefined;
-      // 每年只畫一根空心長條：落在 Q4；當年尚無 Q4 時改落在「至今」
-      const calendarYearNow = new Date().getFullYear();
-      const isQ4Point = /^\d{4}-Q4$/.test(item.period);
-      const isCurrentYearNowPoint =
-        /^\d{4}-NOW$/.test(item.period) && Number.isFinite(calYear) && calYear === calendarYearNow;
-      const hasYearRoi = yearRoi !== undefined && Number.isFinite(yearRoi);
-      const yearlyPeriodRoi =
-        hasYearRoi && (isQ4Point || isCurrentYearNowPoint) ? yearRoi : undefined;
       return {
         year: formatQuarterLabel(item.period),
+        calYear: Number.isFinite(calYear) ? calYear : null,
         cost: toBase(item.cost),
         profit: toBase(item.profit),
         totalAssets: toBase(item.totalAssets),
         estTotalAssets: toBase(item.estTotalAssets),
         isRealData: item.isRealData,
-        yearlyPeriodRoi,
+        yearlyPeriodRoi: undefined as number | undefined,
+        yearlyRoiSpan: 1,
       };
     });
+
+    // 每年只在該年最後一季掛值，空心長條向左橫跨整年（Q1→Q4／至今）
+    const indicesByYear = new Map<number, number[]>();
+    rows.forEach((row, idx) => {
+      if (row.calYear == null) return;
+      const list = indicesByYear.get(row.calYear) ?? [];
+      list.push(idx);
+      indicesByYear.set(row.calYear, list);
+    });
+    indicesByYear.forEach((indices, year) => {
+      const yearRoi = roiByCalendarYear.get(year);
+      if (yearRoi === undefined || !Number.isFinite(yearRoi)) return;
+      const lastIdx = indices[indices.length - 1];
+      rows[lastIdx].yearlyPeriodRoi = yearRoi;
+      rows[lastIdx].yearlyRoiSpan = indices.length;
+    });
+
+    return rows;
   }, [chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData, toBase, translations, roiByCalendarYear]);
 
   const hasInterpolatedQuarterData = useMemo(
@@ -639,16 +658,24 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
     const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
     return <Rectangle {...props} fill={barFill} />;
   }, []);
-  /** 年度報酬：空心＋虛線描邊長條（非實心填色） */
+  /** 年度報酬：每年一根空心虛線長條，自年終季向左橫跨該年各季 */
   const yearlyRoiBarShape = useCallback((props: any) => {
     const v = props?.payload?.yearlyPeriodRoi;
     if (v === undefined || v === null || !Number.isFinite(Number(v))) {
       return <Rectangle {...props} fill="none" stroke="none" />;
     }
+    const span = Math.max(1, Number(props.payload?.yearlyRoiSpan) || 1);
+    const slotW = Number(props.background?.width ?? props.width) || 0;
+    const slotX = Number(props.background?.x ?? props.x) || 0;
+    const inset = 2;
+    const x = slotX - slotW * (span - 1) + inset;
+    const width = Math.max(4, slotW * span - inset * 2);
     const stroke = Number(v) < 0 ? '#ef4444' : '#db2777';
     return (
       <Rectangle
         {...props}
+        x={x}
+        width={width}
         fill="none"
         stroke={stroke}
         strokeWidth={2}

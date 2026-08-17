@@ -614,8 +614,21 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const cumulativeDotSize = isTrendChartCompact ? 3 : 4;
   const cumulativeRoiDotSize = isTrendChartCompact ? 2 : 3;
   const showCumulativeBrush = isTrendChartCompact
-    ? quarterlyTrendData.length > 16
-    : quarterlyTrendData.length > 8;
+    ? quarterlyTrendData.length > 28
+    : quarterlyTrendData.length > 32;
+  /** 點數過多時預設只顯示近期視窗，避免手機上全部擠成細條 */
+  const cumulativeBrushVisibleCount = isTrendChartCompact ? 28 : 32;
+  const cumulativeBrushDefaultIndices = useMemo(() => {
+    const len = quarterlyTrendData.length;
+    if (len === 0) return { startIndex: 0, endIndex: 0 };
+    const endIndex = len - 1;
+    const startIndex = Math.max(0, len - cumulativeBrushVisibleCount);
+    return { startIndex, endIndex };
+  }, [quarterlyTrendData.length, cumulativeBrushVisibleCount]);
+  const [cumulativeBrushIndices, setCumulativeBrushIndices] = useState(cumulativeBrushDefaultIndices);
+  useEffect(() => {
+    setCumulativeBrushIndices(cumulativeBrushDefaultIndices);
+  }, [cumulativeBrushDefaultIndices]);
 
   return (
     <div className="space-y-6">
@@ -1056,6 +1069,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           angle={-45}
                           textAnchor="end"
                           height={cumulativeXAxisHeight}
+                          interval={isTrendChartCompact ? 1 : 0}
                         />
                         <YAxis
                           yAxisId="left"
@@ -1265,7 +1279,20 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             stroke={isDarkMode ? '#64748b' : '#94a3b8'}
                             fill={isDarkMode ? '#1e293b' : '#f1f5f9'}
                             travellerWidth={8}
-                            startIndex={0}
+                            startIndex={cumulativeBrushIndices.startIndex}
+                            endIndex={cumulativeBrushIndices.endIndex}
+                            onChange={(next) => {
+                              if (
+                                next &&
+                                typeof next.startIndex === 'number' &&
+                                typeof next.endIndex === 'number'
+                              ) {
+                                setCumulativeBrushIndices({
+                                  startIndex: next.startIndex,
+                                  endIndex: next.endIndex,
+                                });
+                              }
+                            }}
                             style={{ fontSize: '10px' }}
                             tickFormatter={v => String(v)}
                           />

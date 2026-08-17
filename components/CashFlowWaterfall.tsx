@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import {
   BarChart,
   Bar,
@@ -113,7 +113,10 @@ const CashFlowWaterfall: React.FC<Props> = ({ rows, hideHeader, fillParent, isCo
   const axisTextColor = isDarkMode ? '#cbd5e1' : '#64748b';
   const axisLineColor = isDarkMode ? '#64748b' : '#94a3b8';
 
-  const toBase = (v: number) => valueInBaseCurrency(v, baseCurrency, rates);
+  const toBase = useCallback(
+    (v: number) => valueInBaseCurrency(v, baseCurrency, rates),
+    [baseCurrency, rates]
+  );
 
   const data = useMemo(() => {
     return rows.map(r => {
@@ -141,7 +144,22 @@ const CashFlowWaterfall: React.FC<Props> = ({ rows, hideHeader, fillParent, isCo
         segFlowForTooltip: flow,
       };
     });
-  }, [rows, baseCurrency, rates]);
+  }, [rows, toBase]);
+
+  /** 與累積損益一致：手機預設 7 年、桌面 8 年；超過時可用 Brush 拖看更早 */
+  const brushVisibleCount = isCompact ? 7 : 8;
+  const showBrush = isCompact ? data.length > 7 : data.length > 8;
+  const brushDefaultIndices = useMemo(() => {
+    const len = data.length;
+    if (len === 0) return { startIndex: 0, endIndex: 0 };
+    const endIndex = len - 1;
+    const startIndex = Math.max(0, len - brushVisibleCount);
+    return { startIndex, endIndex };
+  }, [data.length, brushVisibleCount]);
+  const [brushIndices, setBrushIndices] = useState(brushDefaultIndices);
+  useEffect(() => {
+    setBrushIndices(brushDefaultIndices);
+  }, [data.length, brushVisibleCount, brushDefaultIndices]);
 
   const waterfallTooltipContent = React.useCallback(
     ({ active, payload, label, contentStyle }: TooltipProps<number, string>) => {
@@ -297,8 +315,27 @@ const CashFlowWaterfall: React.FC<Props> = ({ rows, hideHeader, fillParent, isCo
               legendType="none"
             />
             <Bar dataKey="segPLNeg" name="segPLNeg" stackId="wf" fill={WF_COLOR_PL_NEG} radius={[2, 2, 0, 0]} legendType="none" />
-            {data.length > 8 && (
-              <Brush dataKey="period" height={24} stroke="#94a3b8" travellerWidth={8} />
+            {showBrush && (
+              <Brush
+                dataKey="period"
+                height={24}
+                stroke="#94a3b8"
+                travellerWidth={12}
+                startIndex={brushIndices.startIndex}
+                endIndex={brushIndices.endIndex}
+                onChange={(next) => {
+                  if (
+                    next &&
+                    typeof next.startIndex === 'number' &&
+                    typeof next.endIndex === 'number'
+                  ) {
+                    setBrushIndices({
+                      startIndex: next.startIndex,
+                      endIndex: next.endIndex,
+                    });
+                  }
+                }}
+              />
             )}
           </BarChart>
         </ResponsiveContainer>

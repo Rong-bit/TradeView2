@@ -1181,7 +1181,18 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                               : false
                           }
                           width={cumulativeRightAxisWidth}
-                          domain={['auto', 'auto']}
+                          // Brush 縮放時勿用純 auto：否則右軸可能不含 0%，年度報酬柱會變成整片色塊
+                          domain={[
+                            (dataMin: number) => {
+                              const min = Number.isFinite(dataMin) ? dataMin : 0;
+                              return Math.min(0, min) - 5;
+                            },
+                            (dataMax: number) => {
+                              const max = Number.isFinite(dataMax) ? dataMax : 0;
+                              return Math.max(0, max) + 5;
+                            },
+                          ]}
+                          allowDataOverflow={false}
                           tickFormatter={(val: number) => `${Math.round(Number(val))}%`}
                         />
                         <Tooltip
@@ -1333,7 +1344,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                               stroke={band.fill}
                               strokeOpacity={0.7}
                               strokeWidth={1}
-                              ifOverflow="visible"
+                              ifOverflow="hidden"
                             />
                           ))}
                         {trendSeriesVisible.yearlyPeriodRoi && (

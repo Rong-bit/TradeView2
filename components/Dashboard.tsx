@@ -572,16 +572,17 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
       return period;
     };
 
-    const calendarYearNow = new Date().getFullYear();
     return buildQuarterlyTrendData(chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData).map(item => {
       const yearMatch = item.period.match(/^(\d{4})(?:-Q[1-4]|-NOW)$/);
       const calYear = yearMatch ? Number(yearMatch[1]) : NaN;
-      const roi = Number.isFinite(calYear) ? roiByCalendarYear.get(calYear) : undefined;
-      // 年度報酬短柱：僅在曆年 Q4 有值；當年尚無 Q4 列時改在「至今」點（與 buildQuarterlyTrendData 一致）
-      const isQ4Point = /^\d{4}-Q4$/.test(item.period);
-      const isCurrentYearNowPoint =
-        /^\d{4}-NOW$/.test(item.period) && Number.isFinite(calYear) && calYear === calendarYearNow;
-      const yearlyPeriodRoi = roi !== undefined && (isQ4Point || isCurrentYearNowPoint) ? roi : undefined;
+      const yearRoi = Number.isFinite(calYear) ? roiByCalendarYear.get(calYear) : undefined;
+      // 年度報酬虛線：同年各季同值，奇偶年拆條避免跨年相連；正負分色
+      const hasYearRoi = yearRoi !== undefined && Number.isFinite(yearRoi);
+      const isOddYear = Number.isFinite(calYear) && calYear % 2 === 1;
+      const yearlyRoiOddPos = hasYearRoi && isOddYear && yearRoi! >= 0 ? yearRoi : undefined;
+      const yearlyRoiOddNeg = hasYearRoi && isOddYear && yearRoi! < 0 ? yearRoi : undefined;
+      const yearlyRoiEvenPos = hasYearRoi && !isOddYear && yearRoi! >= 0 ? yearRoi : undefined;
+      const yearlyRoiEvenNeg = hasYearRoi && !isOddYear && yearRoi! < 0 ? yearRoi : undefined;
       return {
         year: formatQuarterLabel(item.period),
         cost: toBase(item.cost),
@@ -589,7 +590,11 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
         totalAssets: toBase(item.totalAssets),
         estTotalAssets: toBase(item.estTotalAssets),
         isRealData: item.isRealData,
-        yearlyPeriodRoi,
+        yearlyPeriodRoi: hasYearRoi ? yearRoi : undefined,
+        yearlyRoiOddPos,
+        yearlyRoiOddNeg,
+        yearlyRoiEvenPos,
+        yearlyRoiEvenNeg,
       };
     });
   }, [chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData, toBase, translations, roiByCalendarYear]);
@@ -614,7 +619,6 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const cumulativeLeftAxisWidth = isTrendChartCompact ? 30 : 39;
   const cumulativeRightAxisWidth = isTrendChartCompact ? 30 : 40;
   const cumulativeBarSize = isTrendChartCompact ? 22 : 30;
-  const cumulativeRoiBarSize = isTrendChartCompact ? 10 : 14;
   const cumulativeDotSize = isTrendChartCompact ? 3 : 4;
   const showCumulativeBrush = isTrendChartCompact
     ? quarterlyTrendData.length > 16
@@ -635,11 +639,6 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   }, [quarterlyTrendData.length, cumulativeBrushVisibleCount, cumulativeBrushDefaultIndices]);
   const profitBarShape = useCallback((props: any) => {
     const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
-    return <Rectangle {...props} fill={barFill} />;
-  }, []);
-  const yearlyRoiBarShape = useCallback((props: any) => {
-    const v = props?.payload?.yearlyPeriodRoi;
-    const barFill = typeof v === 'number' && v < 0 ? '#ef4444' : '#db2777';
     return <Rectangle {...props} fill={barFill} />;
   }, []);
 
@@ -1266,16 +1265,32 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           />
                         )}
                         {trendSeriesVisible.yearlyPeriodRoi && (
-                          <Bar
-                            yAxisId="right"
-                            dataKey="yearlyPeriodRoi"
-                            name={translations.dashboard.chartLabels.yearlyPeriodRoi}
-                            stackId="roi"
-                            barSize={cumulativeRoiBarSize}
-                            shape={yearlyRoiBarShape}
-                            legendType="none"
-                            isAnimationActive
-                          />
+                          <>
+                            {(
+                              [
+                                { key: 'yearlyRoiOddPos', color: '#db2777' },
+                                { key: 'yearlyRoiEvenPos', color: '#db2777' },
+                                { key: 'yearlyRoiOddNeg', color: '#ef4444' },
+                                { key: 'yearlyRoiEvenNeg', color: '#ef4444' },
+                              ] as const
+                            ).map(series => (
+                              <Line
+                                key={series.key}
+                                yAxisId="right"
+                                type="monotone"
+                                dataKey={series.key}
+                                name={translations.dashboard.chartLabels.yearlyPeriodRoi}
+                                stroke={series.color}
+                                strokeWidth={2}
+                                strokeDasharray="6 4"
+                                dot={false}
+                                activeDot={{ r: 3, strokeWidth: 0 }}
+                                connectNulls={false}
+                                legendType="none"
+                                isAnimationActive
+                              />
+                            ))}
+                          </>
                         )}
                         {showCumulativeBrush && (
                           <Brush

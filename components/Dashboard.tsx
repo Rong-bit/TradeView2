@@ -577,7 +577,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
       const yearMatch = item.period.match(/^(\d{4})(?:-Q[1-4]|-NOW)$/);
       const calYear = yearMatch ? Number(yearMatch[1]) : NaN;
       const roi = Number.isFinite(calYear) ? roiByCalendarYear.get(calYear) : undefined;
-      // 年度報酬折線：僅在曆年 Q4 畫點；當年尚無 Q4 列時改在「至今」點（與 buildQuarterlyTrendData 一致）
+      // 年度報酬短柱：僅在曆年 Q4 有值；當年尚無 Q4 列時改在「至今」點（與 buildQuarterlyTrendData 一致）
       const isQ4Point = /^\d{4}-Q4$/.test(item.period);
       const isCurrentYearNowPoint =
         /^\d{4}-NOW$/.test(item.period) && Number.isFinite(calYear) && calYear === calendarYearNow;
@@ -614,8 +614,8 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const cumulativeLeftAxisWidth = isTrendChartCompact ? 30 : 39;
   const cumulativeRightAxisWidth = isTrendChartCompact ? 30 : 40;
   const cumulativeBarSize = isTrendChartCompact ? 22 : 30;
+  const cumulativeRoiBarSize = isTrendChartCompact ? 10 : 14;
   const cumulativeDotSize = isTrendChartCompact ? 3 : 4;
-  const cumulativeRoiDotSize = isTrendChartCompact ? 2 : 3;
   const showCumulativeBrush = isTrendChartCompact
     ? quarterlyTrendData.length > 16
     : quarterlyTrendData.length > 8;
@@ -635,6 +635,11 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   }, [quarterlyTrendData.length, cumulativeBrushVisibleCount, cumulativeBrushDefaultIndices]);
   const profitBarShape = useCallback((props: any) => {
     const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
+    return <Rectangle {...props} fill={barFill} />;
+  }, []);
+  const yearlyRoiBarShape = useCallback((props: any) => {
+    const v = props?.payload?.yearlyPeriodRoi;
+    const barFill = typeof v === 'number' && v < 0 ? '#ef4444' : '#db2777';
     return <Rectangle {...props} fill={barFill} />;
   }, []);
 
@@ -1260,23 +1265,18 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             dot={false}
                           />
                         )}
-                        <Line
-                          yAxisId="right"
-                          type="monotone"
-                          dataKey="yearlyPeriodRoi"
-                          name={translations.dashboard.chartLabels.yearlyPeriodRoi}
-                          stroke={trendSeriesVisible.yearlyPeriodRoi ? '#db2777' : 'transparent'}
-                          strokeWidth={trendSeriesVisible.yearlyPeriodRoi ? 2 : 0}
-                          dot={
-                            trendSeriesVisible.yearlyPeriodRoi
-                              ? { r: cumulativeRoiDotSize, fill: '#db2777', strokeWidth: 0 }
-                              : false
-                          }
-                          activeDot={trendSeriesVisible.yearlyPeriodRoi ? undefined : false}
-                          connectNulls
-                          legendType={trendSeriesVisible.yearlyPeriodRoi ? 'line' : 'none'}
-                          isAnimationActive={trendSeriesVisible.yearlyPeriodRoi}
-                        />
+                        {trendSeriesVisible.yearlyPeriodRoi && (
+                          <Bar
+                            yAxisId="right"
+                            dataKey="yearlyPeriodRoi"
+                            name={translations.dashboard.chartLabels.yearlyPeriodRoi}
+                            stackId="roi"
+                            barSize={cumulativeRoiBarSize}
+                            shape={yearlyRoiBarShape}
+                            legendType="none"
+                            isAnimationActive
+                          />
+                        )}
                         {showCumulativeBrush && (
                           <Brush
                             dataKey="year"

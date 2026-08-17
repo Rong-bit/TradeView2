@@ -1190,6 +1190,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                         <YAxis
                           yAxisId="right"
                           orientation="right"
+                          type="number"
                           stroke={
                             trendSeriesVisible.yearlyPeriodRoi
                               ? isDarkMode
@@ -1215,8 +1216,11 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           width={cumulativeRightAxisWidth}
                           domain={roiAxisScale.domain}
                           ticks={roiAxisScale.ticks}
+                          interval={0}
                           allowDataOverflow
-                          tickFormatter={(val: number) => `${Math.round(Number(val))}%`}
+                          tickFormatter={(val: number) =>
+                            Math.abs(Number(val)) < 1e-9 ? '0%' : `${Math.round(Number(val))}%`
+                          }
                         />
                         <Tooltip
                           contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}
@@ -1357,10 +1361,17 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           <ReferenceLine
                             yAxisId="right"
                             y={0}
-                            stroke="#94a3b8"
-                            strokeDasharray="4 4"
-                            strokeWidth={1}
+                            stroke={isDarkMode ? '#f472b6' : '#db2777'}
+                            strokeDasharray="5 3"
+                            strokeWidth={1.5}
                             ifOverflow="extendDomain"
+                            label={{
+                              value: '0%',
+                              position: 'insideTopRight',
+                              fill: isDarkMode ? '#f472b6' : '#db2777',
+                              fontSize: 11,
+                              fontWeight: 600,
+                            }}
                           />
                         )}
                         {trendSeriesVisible.yearlyPeriodRoi &&

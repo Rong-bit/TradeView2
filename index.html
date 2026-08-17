@@ -103,6 +103,14 @@
     </script>
     <script>
       (function () {
+        var s = localStorage.getItem('tf-font-scale');
+        var allowed = { '1': 1, '1.125': 1, '1.25': 1 };
+        var v = allowed[s] ? s : '1';
+        document.documentElement.style.setProperty('--app-font-scale', v);
+      })();
+    </script>
+    <script>
+      (function () {
         if (!window.__IS_CAPACITOR_NATIVE__) return;
         var ua = navigator.userAgent || '';
         if (!/iPhone|iPad|iPod/i.test(ua)) return;

@@ -40,6 +40,7 @@ import BatchUpdateMarketModal from './BatchUpdateMarketModal';
 import AssetAllocationSimulator from './AssetAllocationSimulator';
 import StockSplitManager from './StockSplitManager';
 import DarkModeToggle from './DarkModeToggle';
+import FontScaleToggle from './FontScaleToggle';
 import AlertDialog from './AlertDialog';
 import AppConfirmModals from './AppConfirmModals';
 import SubscriptionModal from './SubscriptionModal';
@@ -615,7 +616,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
         <UIContext.Provider value={uiValue}>
           <div className="min-h-screen app-page-shell flex flex-col">
             <header
-              className="app-fixed-header app-chrome-header text-white sticky top-0 z-30"
+              className="app-fixed-header app-chrome-header text-white sticky top-0 z-50"
               style={{
                 isolation: 'isolate',
                 WebkitTransform: 'translateZ(0)',
@@ -729,6 +730,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 pl-2 border-l border-slate-700">
+                      <FontScaleToggle />
                       <DarkModeToggle />
                       <div
                         className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-xs font-bold ring-2 ring-slate-800 shadow-sm"
@@ -929,6 +931,7 @@ const AuthenticatedApp: React.FC<Props> = ({ session }) => {
                     ))}
                   </div>
                   <div className="p-4 border-t border-slate-800 space-y-2">
+                    <FontScaleToggle variant="menu" />
                     <select
                       value={language}
                       onChange={e => {

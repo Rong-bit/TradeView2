@@ -585,7 +585,7 @@ const HoldingsTable: React.FC<Props> = () => {
       </div>
       <div
         ref={scrollContainerRef}
-        className="overflow-auto max-h-[min(65vh,36rem)]"
+        className="overflow-auto max-h-[min(65vh,36rem)] relative z-0 isolate"
         style={{ scrollbarGutter: 'stable' }}
       >
         <table
@@ -596,35 +596,35 @@ const HoldingsTable: React.FC<Props> = () => {
           {(displayMode === 'merged' || expandedAccountIds.size === 0) && (
           <thead className="text-sm">
             <tr>
-              <th className={`${HEADER_BASE} sticky top-0 left-0 z-30 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`} style={{ width: MARKET_COL_WIDTH, minWidth: MARKET_COL_WIDTH }}>{translations.holdings.market}</th>
+              <th className={`${HEADER_BASE} sticky top-0 left-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`} style={{ width: MARKET_COL_WIDTH, minWidth: MARKET_COL_WIDTH }}>{translations.holdings.market}</th>
               <th
-                className={`${HEADER_BASE} sticky top-0 z-30 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 whitespace-nowrap`}
+                className={`${HEADER_BASE} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 whitespace-nowrap`}
                 style={{ left: MARKET_COL_WIDTH }}
               >{translations.holdings.ticker}</th>
-              <th className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.quantity}</th>
-              <th className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.currentPrice}</th>
+              <th className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.quantity}</th>
+              <th className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.currentPrice}</th>
               <th
-                className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('weight')}
               >{translations.holdings.weight}<SortIcon col="weight" /></th>
-              <th className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.cost}</th>
+              <th className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.cost}</th>
               <th
-                className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('currentValue')}
               >{translations.holdings.marketValue}<SortIcon col="currentValue" /></th>
               <th
-                className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('unrealizedPL')}
               >{translations.holdings.profitLoss}<SortIcon col="unrealizedPL" /></th>
               <th
-                className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('annualizedReturn')}
               >{translations.holdings.annualizedROI}<SortIcon col="annualizedReturn" /></th>
               <th
-                className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
+                className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 cursor-pointer hover:text-indigo-600 select-none`}
                 onClick={() => handleSort('dailyChangePercent')}
               >{translations.holdings.dailyChange}<SortIcon col="dailyChangePercent" /></th>
-              <th className={`${HEADER_NUM} sticky top-0 z-20 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.avgPrice}</th>
+              <th className={`${HEADER_NUM} sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700`}>{translations.holdings.avgPrice}</th>
             </tr>
           </thead>
           )}

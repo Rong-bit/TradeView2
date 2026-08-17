@@ -13,6 +13,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* App 內字級倍率：多數 Tailwind text-*（rem）會跟著變；固定 px 的圖示／圖表軸大致維持原尺寸 */
+html {
+  font-size: calc(16px * var(--app-font-scale, 1));
+}
+
 @theme {
   --color-primary: #0f172a;
   --color-secondary: #334155;

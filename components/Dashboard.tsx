@@ -576,8 +576,14 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
       const yearMatch = item.period.match(/^(\d{4})(?:-Q[1-4]|-NOW)$/);
       const calYear = yearMatch ? Number(yearMatch[1]) : NaN;
       const yearRoi = Number.isFinite(calYear) ? roiByCalendarYear.get(calYear) : undefined;
-      // 年度報酬空心長條：同年 Q1–Q4（含至今）共用該年報酬率
+      // 每年只畫一根空心長條：落在 Q4；當年尚無 Q4 時改落在「至今」
+      const calendarYearNow = new Date().getFullYear();
+      const isQ4Point = /^\d{4}-Q4$/.test(item.period);
+      const isCurrentYearNowPoint =
+        /^\d{4}-NOW$/.test(item.period) && Number.isFinite(calYear) && calYear === calendarYearNow;
       const hasYearRoi = yearRoi !== undefined && Number.isFinite(yearRoi);
+      const yearlyPeriodRoi =
+        hasYearRoi && (isQ4Point || isCurrentYearNowPoint) ? yearRoi : undefined;
       return {
         year: formatQuarterLabel(item.period),
         cost: toBase(item.cost),
@@ -585,7 +591,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
         totalAssets: toBase(item.totalAssets),
         estTotalAssets: toBase(item.estTotalAssets),
         isRealData: item.isRealData,
-        yearlyPeriodRoi: hasYearRoi ? yearRoi : undefined,
+        yearlyPeriodRoi,
       };
     });
   }, [chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData, toBase, translations, roiByCalendarYear]);
@@ -610,7 +616,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const cumulativeLeftAxisWidth = isTrendChartCompact ? 30 : 39;
   const cumulativeRightAxisWidth = isTrendChartCompact ? 30 : 40;
   const cumulativeBarSize = isTrendChartCompact ? 22 : 30;
-  const cumulativeRoiBarSize = isTrendChartCompact ? 10 : 14;
+  const cumulativeRoiBarSize = isTrendChartCompact ? 14 : 18;
   const cumulativeDotSize = isTrendChartCompact ? 3 : 4;
   const showCumulativeBrush = isTrendChartCompact
     ? quarterlyTrendData.length > 16

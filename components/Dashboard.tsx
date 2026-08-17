@@ -4,7 +4,7 @@ import { formatCurrency, valueInBaseCurrency, getDisplayRateForBaseCurrency, hol
 import { usePortfolio } from '../contexts/PortfolioContext';
 import { useMarket } from '../contexts/MarketContext';
 import { useUI } from '../contexts/UIContext';
-import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Brush, AreaChart, Area, Rectangle, ReferenceArea } from 'recharts';
+import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Brush, AreaChart, Area, Rectangle, ReferenceArea, ReferenceLine } from 'recharts';
 import HoldingsTable from './HoldingsTable';
 import MarketPerformanceChart from './MarketPerformanceChart';
 import CashFlowWaterfall, { WaterfallLegendHints } from './CashFlowWaterfall';
@@ -691,6 +691,38 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
     return bands;
   }, [quarterlyTrendData, showCumulativeBrush, cumulativeBrushIndices]);
 
+  /** 右軸必須含 0%，並產生含 0 的刻度，避免 Brush 縮放後 0% 消失 */
+  const roiAxisScale = useMemo(() => {
+    const rois: number[] = [];
+    if (quarterlyTrendData.length > 0) {
+      const viewStart = showCumulativeBrush
+        ? Math.max(0, cumulativeBrushIndices.startIndex)
+        : 0;
+      const viewEnd = showCumulativeBrush
+        ? Math.min(quarterlyTrendData.length - 1, cumulativeBrushIndices.endIndex)
+        : quarterlyTrendData.length - 1;
+      const seenYears = new Set<number>();
+      for (let idx = viewStart; idx <= viewEnd; idx++) {
+        const row = quarterlyTrendData[idx];
+        if (row.calYear == null || row.yearlyPeriodRoi === undefined || !Number.isFinite(row.yearlyPeriodRoi)) continue;
+        if (seenYears.has(row.calYear)) continue;
+        seenYears.add(row.calYear);
+        rois.push(row.yearlyPeriodRoi);
+      }
+    }
+    const dataMin = rois.length ? Math.min(...rois) : 0;
+    const dataMax = rois.length ? Math.max(...rois) : 10;
+    const lo = Math.min(0, dataMin) - 5;
+    const hi = Math.max(0, dataMax) + 5;
+    const step = hi - lo > 40 ? 10 : 5;
+    const ticks: number[] = [];
+    const start = Math.ceil(lo / step) * step;
+    for (let t = start; t <= hi + 1e-9; t += step) ticks.push(Number(t.toFixed(6)));
+    if (!ticks.some(t => Math.abs(t) < 1e-9)) ticks.push(0);
+    ticks.sort((a, b) => a - b);
+    return { domain: [lo, hi] as [number, number], ticks };
+  }, [quarterlyTrendData, showCumulativeBrush, cumulativeBrushIndices]);
+
   const profitBarShape = useCallback((props: any) => {
     const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
     return <Rectangle {...props} fill={barFill} />;
@@ -1181,18 +1213,9 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                               : false
                           }
                           width={cumulativeRightAxisWidth}
-                          // Brush 縮放時勿用純 auto：否則右軸可能不含 0%，年度報酬柱會變成整片色塊
-                          domain={[
-                            (dataMin: number) => {
-                              const min = Number.isFinite(dataMin) ? dataMin : 0;
-                              return Math.min(0, min) - 5;
-                            },
-                            (dataMax: number) => {
-                              const max = Number.isFinite(dataMax) ? dataMax : 0;
-                              return Math.max(0, max) + 5;
-                            },
-                          ]}
-                          allowDataOverflow={false}
+                          domain={roiAxisScale.domain}
+                          ticks={roiAxisScale.ticks}
+                          allowDataOverflow
                           tickFormatter={(val: number) => `${Math.round(Number(val))}%`}
                         />
                         <Tooltip
@@ -1328,6 +1351,16 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             stroke="#f59e0b"
                             strokeWidth={2}
                             dot={false}
+                          />
+                        )}
+                        {trendSeriesVisible.yearlyPeriodRoi && (
+                          <ReferenceLine
+                            yAxisId="right"
+                            y={0}
+                            stroke="#94a3b8"
+                            strokeDasharray="4 4"
+                            strokeWidth={1}
+                            ifOverflow="extendDomain"
                           />
                         )}
                         {trendSeriesVisible.yearlyPeriodRoi &&

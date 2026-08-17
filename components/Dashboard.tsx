@@ -685,7 +685,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
         x2: last.year,
         y1: Math.min(0, roi),
         y2: Math.max(0, roi),
-        fill: roi < 0 ? '#ef4444' : '#db2777',
+        fill: roi < 0 ? '#ef4444' : '#10b981',
       });
     });
     return bands;
@@ -1092,7 +1092,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                     { key: 'profit', label: translations.dashboard.chartLabels.barName, color: '#10b981' },
                     { key: 'totalAssets', label: translations.dashboard.chartLabels.totalAssets, color: '#3b82f6' },
                     { key: 'estTotalAssets', label: translations.dashboard.chartLabels.estimatedAssets, color: '#f59e0b' },
-                    { key: 'yearlyPeriodRoi', label: translations.dashboard.chartLabels.yearlyPeriodRoi, color: '#db2777' },
+                    { key: 'yearlyPeriodRoi', label: translations.dashboard.chartLabels.yearlyPeriodRoi, color: '#10b981' },
                   ].map(item => (
                     <label key={item.key} className="inline-flex items-center gap-1.5 cursor-pointer select-none">
                       <input
@@ -1161,23 +1161,23 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           stroke={
                             trendSeriesVisible.yearlyPeriodRoi
                               ? isDarkMode
-                                ? '#f472b6'
-                                : '#db2777'
+                                ? '#34d399'
+                                : '#10b981'
                               : 'transparent'
                           }
                           tick={
                             trendSeriesVisible.yearlyPeriodRoi
-                              ? { fill: isDarkMode ? '#f472b6' : '#db2777', fontSize: 9 }
+                              ? { fill: isDarkMode ? '#34d399' : '#10b981', fontSize: 9 }
                               : false
                           }
                           axisLine={
                             trendSeriesVisible.yearlyPeriodRoi
-                              ? { stroke: isDarkMode ? '#f472b6' : '#db2777' }
+                              ? { stroke: isDarkMode ? '#34d399' : '#10b981' }
                               : false
                           }
                           tickLine={
                             trendSeriesVisible.yearlyPeriodRoi
-                              ? { stroke: isDarkMode ? '#f472b6' : '#db2777' }
+                              ? { stroke: isDarkMode ? '#34d399' : '#10b981' }
                               : false
                           }
                           width={cumulativeRightAxisWidth}
@@ -1191,8 +1191,9 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                           formatter={(value: number, name: string, props: any) => {
                             if (name === translations.dashboard.chartLabels.yearlyPeriodRoi && typeof value === 'number' && Number.isFinite(value)) {
                               const roiLabel = translations.dashboard.chartLabels.yearlyPeriodRoi;
+                              const roiColor = value < 0 ? '#ef4444' : '#10b981';
                               return [
-                                <span style={{ color: '#db2777', fontWeight: 700 }} key="yroi">
+                                <span style={{ color: roiColor, fontWeight: 700 }} key="yroi">
                                   {roiLabel}：{value.toFixed(2)}%
                                 </span>,
                                 '',
@@ -1328,9 +1329,9 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                               y1={band.y1}
                               y2={band.y2}
                               fill={band.fill}
-                              fillOpacity={0.22}
+                              fillOpacity={0.28}
                               stroke={band.fill}
-                              strokeOpacity={0.55}
+                              strokeOpacity={0.7}
                               strokeWidth={1}
                               ifOverflow="visible"
                             />
@@ -1344,7 +1345,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             stroke="transparent"
                             strokeWidth={0}
                             dot={false}
-                            activeDot={{ r: 3, fill: '#db2777', strokeWidth: 0 }}
+                            activeDot={{ r: 3, fill: '#10b981', strokeWidth: 0 }}
                             connectNulls={false}
                             legendType="none"
                             isAnimationActive={false}

@@ -614,8 +614,10 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
     return rows;
   }, [chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData, toBase, translations, roiByCalendarYear]);
 
+  // ReferenceArea：x1 取類別起點、x2 取同類別終點，故必須用「該年第一季→該年最後一季」
+  // （勿用下一年，否則框會伸進隔年並互相重疊）
   const yearlyRoiBands = useMemo(() => {
-    const bands: Array<{ x1: string; x2: string; y1: number; y2: number; stroke: string; key: string }> = [];
+    const bands: Array<{ key: string; x1: string; x2: string; y1: number; y2: number; stroke: string }> = [];
     const indicesByYear = new Map<number, number[]>();
     quarterlyTrendData.forEach((row, idx) => {
       if (row.calYear == null || row.yearlyPeriodRoi === undefined) return;
@@ -624,18 +626,14 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
       indicesByYear.set(row.calYear, list);
     });
     indicesByYear.forEach((indices, year) => {
-      const firstIdx = indices[0];
-      const lastIdx = indices[indices.length - 1];
-      const first = quarterlyTrendData[firstIdx];
-      const last = quarterlyTrendData[lastIdx];
+      const first = quarterlyTrendData[indices[0]];
+      const last = quarterlyTrendData[indices[indices.length - 1]];
       const roi = first.yearlyPeriodRoi;
       if (roi === undefined || !Number.isFinite(roi)) return;
-      // x2 用「下一個類別」當右邊界，才會含到該年最後一季的完整寬度
-      const next = quarterlyTrendData[lastIdx + 1];
       bands.push({
         key: `roi-${year}`,
         x1: first.year,
-        x2: next?.year ?? last.year,
+        x2: last.year,
         y1: Math.min(0, roi),
         y2: Math.max(0, roi),
         stroke: roi < 0 ? '#ef4444' : '#db2777',
@@ -1319,9 +1317,11 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                               y1={band.y1}
                               y2={band.y2}
                               stroke={band.stroke}
+                              strokeWidth={2}
                               strokeDasharray="5 3"
                               strokeOpacity={1}
                               fill="none"
+                              fillOpacity={0}
                               ifOverflow="visible"
                             />
                           ))}

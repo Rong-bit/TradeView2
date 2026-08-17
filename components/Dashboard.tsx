@@ -595,7 +595,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
       };
     });
 
-    // 每年整段 Q1→年末掛上報酬率，供 Tooltip；外框由 yearlyRoiBands 橫跨類別軸畫出
+    // 每年整段 Q1→年末掛上報酬率，供 Tooltip；半透明年柱由 yearlyRoiBands 橫跨類別軸畫出
     const indicesByYear = new Map<number, number[]>();
     rows.forEach((row, idx) => {
       if (row.calYear == null) return;
@@ -613,34 +613,6 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
 
     return rows;
   }, [chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData, toBase, translations, roiByCalendarYear]);
-
-  // ReferenceArea：x1 取類別起點、x2 取同類別終點，故必須用「該年第一季→該年最後一季」
-  // （勿用下一年，否則框會伸進隔年並互相重疊）
-  const yearlyRoiBands = useMemo(() => {
-    const bands: Array<{ key: string; x1: string; x2: string; y1: number; y2: number; stroke: string }> = [];
-    const indicesByYear = new Map<number, number[]>();
-    quarterlyTrendData.forEach((row, idx) => {
-      if (row.calYear == null || row.yearlyPeriodRoi === undefined) return;
-      const list = indicesByYear.get(row.calYear) ?? [];
-      list.push(idx);
-      indicesByYear.set(row.calYear, list);
-    });
-    indicesByYear.forEach((indices, year) => {
-      const first = quarterlyTrendData[indices[0]];
-      const last = quarterlyTrendData[indices[indices.length - 1]];
-      const roi = first.yearlyPeriodRoi;
-      if (roi === undefined || !Number.isFinite(roi)) return;
-      bands.push({
-        key: `roi-${year}`,
-        x1: first.year,
-        x2: last.year,
-        y1: Math.min(0, roi),
-        y2: Math.max(0, roi),
-        stroke: roi < 0 ? '#ef4444' : '#db2777',
-      });
-    });
-    return bands;
-  }, [quarterlyTrendData]);
 
   const hasInterpolatedQuarterData = useMemo(
     () => quarterlyTrendData.some(d => !d.isRealData),
@@ -680,6 +652,45 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   useEffect(() => {
     setCumulativeBrushIndices(cumulativeBrushDefaultIndices);
   }, [quarterlyTrendData.length, cumulativeBrushVisibleCount, cumulativeBrushDefaultIndices]);
+
+  // ReferenceArea：x1 起點、x2 終點；並依 Brush 可見區間裁切，避免視窗外類別導致整年柱消失
+  const yearlyRoiBands = useMemo(() => {
+    const bands: Array<{ key: string; x1: string; x2: string; y1: number; y2: number; fill: string }> = [];
+    if (quarterlyTrendData.length === 0) return bands;
+
+    const viewStart = showCumulativeBrush
+      ? Math.max(0, cumulativeBrushIndices.startIndex)
+      : 0;
+    const viewEnd = showCumulativeBrush
+      ? Math.min(quarterlyTrendData.length - 1, cumulativeBrushIndices.endIndex)
+      : quarterlyTrendData.length - 1;
+
+    const indicesByYear = new Map<number, number[]>();
+    for (let idx = viewStart; idx <= viewEnd; idx++) {
+      const row = quarterlyTrendData[idx];
+      if (row.calYear == null || row.yearlyPeriodRoi === undefined) continue;
+      const list = indicesByYear.get(row.calYear) ?? [];
+      list.push(idx);
+      indicesByYear.set(row.calYear, list);
+    }
+
+    indicesByYear.forEach((indices, year) => {
+      const first = quarterlyTrendData[indices[0]];
+      const last = quarterlyTrendData[indices[indices.length - 1]];
+      const roi = first.yearlyPeriodRoi;
+      if (roi === undefined || !Number.isFinite(roi)) return;
+      bands.push({
+        key: `roi-${year}`,
+        x1: first.year,
+        x2: last.year,
+        y1: Math.min(0, roi),
+        y2: Math.max(0, roi),
+        fill: roi < 0 ? '#ef4444' : '#db2777',
+      });
+    });
+    return bands;
+  }, [quarterlyTrendData, showCumulativeBrush, cumulativeBrushIndices]);
+
   const profitBarShape = useCallback((props: any) => {
     const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
     return <Rectangle {...props} fill={barFill} />;
@@ -1316,12 +1327,11 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                               x2={band.x2}
                               y1={band.y1}
                               y2={band.y2}
-                              stroke={band.stroke}
-                              strokeWidth={2}
-                              strokeDasharray="5 3"
-                              strokeOpacity={1}
-                              fill="none"
-                              fillOpacity={0}
+                              fill={band.fill}
+                              fillOpacity={0.22}
+                              stroke={band.fill}
+                              strokeOpacity={0.55}
+                              strokeWidth={1}
                               ifOverflow="visible"
                             />
                           ))}

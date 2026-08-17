@@ -245,7 +245,7 @@ export const fr: Translations = {
     nhiForecastTag: 'Le versement unique estime peut declencher le supplement NHI',
     pendingActualTitle: 'Dividendes reels a confirmer',
     pendingActualSubtitle: 'Ex-dividendes de cette annee absents de vos transactions sont listes ci-dessous. « Ajouter » enregistre a la date de versement (visible sur la heatmap) ; « Masquer » masque la ligne.',
-    pendingActualDripHint: 'Pour le réinvestissement des dividendes (DRIP), utilisez « Ajouter une transaction » dans l\'historique — n\'appuyez pas sur « Ajouter » ici.',
+    pendingActualDripHint: 'Pour le Réinvestissement des dividendes (DRIP), allez dans « Historique » et appuyez sur « + Ajouter un enregistrement » — n\'appuyez pas sur « Ajouter » ici.',
     pendingActualEmpty: 'Aucun dividende reel a completer pour le moment.',
     pendingActualLoading: 'Chargement des donnees reelles...',
     pendingActualAddBtn: 'Ajouter',

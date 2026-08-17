@@ -614,9 +614,9 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const cumulativeDotSize = isTrendChartCompact ? 3 : 4;
   const cumulativeRoiDotSize = isTrendChartCompact ? 2 : 3;
   const showCumulativeBrush = isTrendChartCompact
-    ? quarterlyTrendData.length > 28
-    : quarterlyTrendData.length > 32;
-  /** 點數過多時預設只顯示近期視窗，避免手機上全部擠成細條 */
+    ? quarterlyTrendData.length > 16
+    : quarterlyTrendData.length > 8;
+  /** 點數過多時預設只顯示近期視窗，避免手機上全部擠成細條；Brush 仍可拖回更早歷史 */
   const cumulativeBrushVisibleCount = isTrendChartCompact ? 28 : 32;
   const cumulativeBrushDefaultIndices = useMemo(() => {
     const len = quarterlyTrendData.length;

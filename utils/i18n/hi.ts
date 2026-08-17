@@ -220,7 +220,7 @@ export const hi: Translations = {
     nhiForecastTag: 'अनुमान: यह एकल लाभांश NHI अतिरिक्त प्रीमियम ट्रिगर कर सकता है',
     pendingActualTitle: 'पुष्टि हेतु लंबित वास्तविक लाभांश',
     pendingActualSubtitle: 'इस वर्ष ex-dividend हो चुके लेकिन लेनदेन में नहीं — नीचे सूची। "जोड़ें" भुगतान तिथि पर दर्ज (हीटमैप पर), "रद्द" से छिपाएं।',
-    pendingActualDripHint: 'लाभांश पुनर्निवेश (DRIP) के लिए लेनदेन इतिहास में "लेनदेन जोड़ें" का उपयोग करें — यहाँ "जोड़ें" न दबाएँ।',
+    pendingActualDripHint: 'लाभांश पुनर्निवेश (DRIP) के लिए « इतिहास » में « + रिकॉर्ड जोड़ें » दबाएँ — यहाँ « जोड़ें » न दबाएँ।',
     pendingActualEmpty: 'फिलहाल जोड़ने के लिए कोई लंबित वास्तविक लाभांश नहीं।',
     pendingActualLoading: 'वास्तविक डेटा लोड हो रहा है...',
     pendingActualAddBtn: 'जोड़ें',

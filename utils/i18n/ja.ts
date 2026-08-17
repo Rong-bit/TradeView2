@@ -274,7 +274,7 @@ export const ja: Translations = {
     nhiForecastTag: '単発配当で二代健保の可能性',
     pendingActualTitle: '未確認の実績配当',
     pendingActualSubtitle: '今年除息済み、取引履歴に未登録の配当を下に一覧表示。「追加」で支払日に計上しヒートマップに反映、「取消」で非表示。',
-    pendingActualDripHint: '配当再投資 (DRIP) は取引履歴の「取引追加」から登録し、「追加」は押さないでください。',
+    pendingActualDripHint: '配当再投資 (DRIP) は「取引履歴」で「+記録追加」から登録し、ここでの「追加」は押さないでください。',
     pendingActualEmpty: '補登録が必要な実績配当はありません。',
     pendingActualLoading: '実績データを取得中…',
     pendingActualAddBtn: '追加',

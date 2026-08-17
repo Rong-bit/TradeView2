@@ -274,7 +274,7 @@ export const ko: Translations = {
     nhiForecastTag: '예상 1회 배당으로 건강보험 추가부담금이 발생할 수 있음',
     pendingActualTitle: '확인 필요한 실배당',
     pendingActualSubtitle: '올해 배당락이 지났지만 거래 기록에 없는 배당을 아래에 표시합니다. "추가"로 지급일에 기록·히트맵 반영, "취소"로 숨김.',
-    pendingActualDripHint: '배당 재투자(DRIP)는 거래 기록에서 "거래 추가"로 등록하세요. 여기서 "추가"를 누르지 마세요.',
+    pendingActualDripHint: '배당 재투자 (DRIP)는 「거래 내역」에서 「+ 기록 추가」로 등록하세요. 여기서 「추가」를 누르지 마세요.',
     pendingActualEmpty: '등록이 필요한 실배당이 없습니다.',
     pendingActualLoading: '실적 데이터 로드 중…',
     pendingActualAddBtn: '추가',

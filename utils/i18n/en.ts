@@ -275,7 +275,7 @@ export const en: Translations = {
     nhiForecastTag: 'Est. payout may trigger NHI supplement fee',
     pendingActualTitle: 'Actual dividends to confirm',
     pendingActualSubtitle: 'Ex-dates this year not yet in your transactions are listed below. Click "Add" to record on the pay date (shown on the heatmap), or "Dismiss" to hide a row permanently.',
-    pendingActualDripHint: 'For dividend reinvestment (DRIP), use "Add Transaction" in Transaction History — do not click "Add" here.',
+    pendingActualDripHint: 'For Dividend Reinvestment (DRIP), go to "Transactions" and tap "+ Add Record" — do not click "Add" here.',
     pendingActualEmpty: 'No pending actual dividends to record.',
     pendingActualLoading: 'Loading actual dividend data…',
     pendingActualAddBtn: 'Add',

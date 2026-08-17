@@ -271,7 +271,7 @@ export const zhTW: Translations = {
     nhiForecastTag: '預估單次配息將觸發二代健保扣費',
     pendingActualTitle: '待確認實績配息',
     pendingActualSubtitle: '今年已除息、尚未在交易紀錄出現的配息會列於下方清單；按下「新增」即以發放日入帳並顯示於熱力圖，「取消」則不再提示該筆。',
-    pendingActualDripHint: '若為股息再投入 (DRIP)，請至交易紀錄「記一筆」登記，勿按「新增」。',
+    pendingActualDripHint: '若為股息再投入 (DRIP)，請至「交易紀錄」點「記一筆」登記，勿按「新增」。',
     pendingActualEmpty: '目前沒有需要補登的實績配息。',
     pendingActualLoading: '載入實績資料…',
     pendingActualAddBtn: '新增',

@@ -217,7 +217,7 @@ zhCN.dividendTax = {
   nhiForecastTag: '预估单次配息将触发二代健保扣费',
   pendingActualTitle: '待确认实绩配息',
   pendingActualSubtitle: '今年已除息、尚未在交易记录出现的配息会列于下方清单；点击「新增」即以发放日入账并显示于热力图，「取消」则不再提示该笔。',
-  pendingActualDripHint: '若为股息再投入 (DRIP)，请至交易记录「记一笔」登记，勿按「新增」。',
+  pendingActualDripHint: '若为股息再投入 (DRIP)，请至「交易记录」点「记一笔」登记，勿按「新增」。',
   pendingActualEmpty: '目前没有需要补登的实绩配息。',
   pendingActualLoading: '加载实绩数据…',
   pendingActualAddBtn: '新增',

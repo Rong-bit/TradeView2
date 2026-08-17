@@ -244,7 +244,7 @@ export const de: Translations = {
     nhiForecastTag: 'Die geschaetzte Einzelausschuettung kann einen NHI-Zusatzbeitrag ausloesen',
     pendingActualTitle: 'Tatsächliche Dividenden',
     pendingActualSubtitle: 'Ex-Tage dieses Jahres ohne Eintrag werden unten gelistet. „Hinzufügen“ bucht zum Auszahlungstag (sichtbar in der Heatmap), „Ausblenden“ blendet die Zeile aus.',
-    pendingActualDripHint: 'Bei Dividenden-Reinvestition (DRIP) bitte im Transaktionsverlauf „Transaktion hinzufügen“ nutzen — hier nicht „Hinzufügen“ klicken.',
+    pendingActualDripHint: 'Bei Dividenden-Reinvestition (DRIP) bitte zu „Transaktionen“ gehen und „+ Eintrag hinzufügen“ tippen — hier nicht „Hinzufügen“ klicken.',
     pendingActualEmpty: 'Keine offenen tatsächlichen Dividenden.',
     pendingActualLoading: 'Daten werden geladen …',
     pendingActualAddBtn: 'Hinzufügen',

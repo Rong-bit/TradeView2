@@ -4,7 +4,7 @@ import { formatCurrency, valueInBaseCurrency, getDisplayRateForBaseCurrency, hol
 import { usePortfolio } from '../contexts/PortfolioContext';
 import { useMarket } from '../contexts/MarketContext';
 import { useUI } from '../contexts/UIContext';
-import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Brush, AreaChart, Area, Rectangle } from 'recharts';
+import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Brush, AreaChart, Area, Rectangle, ReferenceArea } from 'recharts';
 import HoldingsTable from './HoldingsTable';
 import MarketPerformanceChart from './MarketPerformanceChart';
 import CashFlowWaterfall, { WaterfallLegendHints } from './CashFlowWaterfall';
@@ -592,11 +592,10 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
         estTotalAssets: toBase(item.estTotalAssets),
         isRealData: item.isRealData,
         yearlyPeriodRoi: undefined as number | undefined,
-        yearlyRoiSpan: 1,
       };
     });
 
-    // 每年只在該年最後一季掛值，空心長條向左橫跨整年（Q1→Q4／至今）
+    // 每年整段 Q1→年末掛上報酬率，供 Tooltip；外框由 yearlyRoiBands 橫跨類別軸畫出
     const indicesByYear = new Map<number, number[]>();
     rows.forEach((row, idx) => {
       if (row.calYear == null) return;
@@ -607,13 +606,43 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
     indicesByYear.forEach((indices, year) => {
       const yearRoi = roiByCalendarYear.get(year);
       if (yearRoi === undefined || !Number.isFinite(yearRoi)) return;
-      const lastIdx = indices[indices.length - 1];
-      rows[lastIdx].yearlyPeriodRoi = yearRoi;
-      rows[lastIdx].yearlyRoiSpan = indices.length;
+      indices.forEach(idx => {
+        rows[idx].yearlyPeriodRoi = yearRoi;
+      });
     });
 
     return rows;
   }, [chartData, attributionSeries, cashFlows, transactions, portfolioAccounts, rates, historicalData, toBase, translations, roiByCalendarYear]);
+
+  const yearlyRoiBands = useMemo(() => {
+    const bands: Array<{ x1: string; x2: string; y1: number; y2: number; stroke: string; key: string }> = [];
+    const indicesByYear = new Map<number, number[]>();
+    quarterlyTrendData.forEach((row, idx) => {
+      if (row.calYear == null || row.yearlyPeriodRoi === undefined) return;
+      const list = indicesByYear.get(row.calYear) ?? [];
+      list.push(idx);
+      indicesByYear.set(row.calYear, list);
+    });
+    indicesByYear.forEach((indices, year) => {
+      const firstIdx = indices[0];
+      const lastIdx = indices[indices.length - 1];
+      const first = quarterlyTrendData[firstIdx];
+      const last = quarterlyTrendData[lastIdx];
+      const roi = first.yearlyPeriodRoi;
+      if (roi === undefined || !Number.isFinite(roi)) return;
+      // x2 用「下一個類別」當右邊界，才會含到該年最後一季的完整寬度
+      const next = quarterlyTrendData[lastIdx + 1];
+      bands.push({
+        key: `roi-${year}`,
+        x1: first.year,
+        x2: next?.year ?? last.year,
+        y1: Math.min(0, roi),
+        y2: Math.max(0, roi),
+        stroke: roi < 0 ? '#ef4444' : '#db2777',
+      });
+    });
+    return bands;
+  }, [quarterlyTrendData]);
 
   const hasInterpolatedQuarterData = useMemo(
     () => quarterlyTrendData.some(d => !d.isRealData),
@@ -635,7 +664,6 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const cumulativeLeftAxisWidth = isTrendChartCompact ? 30 : 39;
   const cumulativeRightAxisWidth = isTrendChartCompact ? 30 : 40;
   const cumulativeBarSize = isTrendChartCompact ? 22 : 30;
-  const cumulativeRoiBarSize = isTrendChartCompact ? 14 : 18;
   const cumulativeDotSize = isTrendChartCompact ? 3 : 4;
   const showCumulativeBrush = isTrendChartCompact
     ? quarterlyTrendData.length > 16
@@ -657,31 +685,6 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const profitBarShape = useCallback((props: any) => {
     const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
     return <Rectangle {...props} fill={barFill} />;
-  }, []);
-  /** 年度報酬：每年一根空心虛線長條，自年終季向左橫跨該年各季 */
-  const yearlyRoiBarShape = useCallback((props: any) => {
-    const v = props?.payload?.yearlyPeriodRoi;
-    if (v === undefined || v === null || !Number.isFinite(Number(v))) {
-      return <Rectangle {...props} fill="none" stroke="none" />;
-    }
-    const span = Math.max(1, Number(props.payload?.yearlyRoiSpan) || 1);
-    const slotW = Number(props.background?.width ?? props.width) || 0;
-    const slotX = Number(props.background?.x ?? props.x) || 0;
-    const inset = 2;
-    const x = slotX - slotW * (span - 1) + inset;
-    const width = Math.max(4, slotW * span - inset * 2);
-    const stroke = Number(v) < 0 ? '#ef4444' : '#db2777';
-    return (
-      <Rectangle
-        {...props}
-        x={x}
-        width={width}
-        fill="none"
-        stroke={stroke}
-        strokeWidth={2}
-        strokeDasharray="5 3"
-      />
-    );
   }, []);
 
   return (
@@ -1306,16 +1309,35 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             dot={false}
                           />
                         )}
+                        {trendSeriesVisible.yearlyPeriodRoi &&
+                          yearlyRoiBands.map(band => (
+                            <ReferenceArea
+                              key={band.key}
+                              yAxisId="right"
+                              x1={band.x1}
+                              x2={band.x2}
+                              y1={band.y1}
+                              y2={band.y2}
+                              stroke={band.stroke}
+                              strokeDasharray="5 3"
+                              strokeOpacity={1}
+                              fill="none"
+                              ifOverflow="visible"
+                            />
+                          ))}
                         {trendSeriesVisible.yearlyPeriodRoi && (
-                          <Bar
+                          <Line
                             yAxisId="right"
+                            type="monotone"
                             dataKey="yearlyPeriodRoi"
                             name={translations.dashboard.chartLabels.yearlyPeriodRoi}
-                            stackId="roi"
-                            barSize={cumulativeRoiBarSize}
-                            shape={yearlyRoiBarShape}
+                            stroke="transparent"
+                            strokeWidth={0}
+                            dot={false}
+                            activeDot={{ r: 3, fill: '#db2777', strokeWidth: 0 }}
+                            connectNulls={false}
                             legendType="none"
-                            isAnimationActive
+                            isAnimationActive={false}
                           />
                         )}
                         {showCumulativeBrush && (

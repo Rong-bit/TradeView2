@@ -116,7 +116,10 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
   const [hoveredAnnualYear, setHoveredAnnualYear] = useState<string | null>(null);
   const [hoveredAccountId, setHoveredAccountId] = useState<string | null>(null);
 
-  const toBase = (v: number) => valueInBaseCurrency(v, baseCurrency, rates);
+  const toBase = useCallback(
+    (v: number) => valueInBaseCurrency(v, baseCurrency, rates),
+    [baseCurrency, rates]
+  );
   const displayRate = getDisplayRateForBaseCurrency(baseCurrency, rates);
 
   const liabilityInsights = useMemo(
@@ -626,9 +629,14 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
     return { startIndex, endIndex };
   }, [quarterlyTrendData.length, cumulativeBrushVisibleCount]);
   const [cumulativeBrushIndices, setCumulativeBrushIndices] = useState(cumulativeBrushDefaultIndices);
+  // 僅在資料長度／可視季數門檻變化時重設預設視窗，避免拖曳中被重算的物件參考打斷
   useEffect(() => {
     setCumulativeBrushIndices(cumulativeBrushDefaultIndices);
-  }, [cumulativeBrushDefaultIndices]);
+  }, [quarterlyTrendData.length, cumulativeBrushVisibleCount, cumulativeBrushDefaultIndices]);
+  const profitBarShape = useCallback((props: any) => {
+    const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
+    return <Rectangle {...props} fill={barFill} />;
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -1227,10 +1235,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             name={translations.dashboard.chartLabels.barName}
                             stackId="a"
                             barSize={cumulativeBarSize}
-                            shape={(props: any) => {
-                              const barFill = props?.payload?.profit >= 0 ? '#10b981' : '#ef4444';
-                              return <Rectangle {...props} fill={barFill} />;
-                            }}
+                            shape={profitBarShape}
                           />
                         )}
                         {trendSeriesVisible.totalAssets && (
@@ -1278,7 +1283,7 @@ function Dashboard({ onUpdateHistorical }: DashboardProps) {
                             height={28}
                             stroke={isDarkMode ? '#64748b' : '#94a3b8'}
                             fill={isDarkMode ? '#1e293b' : '#f1f5f9'}
-                            travellerWidth={8}
+                            travellerWidth={12}
                             startIndex={cumulativeBrushIndices.startIndex}
                             endIndex={cumulativeBrushIndices.endIndex}
                             onChange={(next) => {
